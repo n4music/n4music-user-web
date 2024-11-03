@@ -7,7 +7,7 @@ COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN apk add --no-cache git python3 make g++ \
-    && npm ci --frozen-lockfile \
+    && npm i --legacy-peer-deps \
     && npm cache clean --force
 
 # Build Image
