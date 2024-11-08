@@ -1,0 +1,152 @@
+.login-wrapper {
+    background: linear-gradient(rgb(40, 40, 40), rgb(0, 0, 0));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+.container-login {
+    background-color: #151515;
+    padding: 50px 220px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 750px;
+    margin: 40px 0px;
+    
+}
+
+.header-login {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.header-login i {
+    color: white;
+    font-size: 2.5rem;
+}
+
+.header-login h1 {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 16px;
+}
+.header-login img {
+    width: 150px;
+    display: block;
+    margin: 0 auto;
+}
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.btn {
+    width: 100%;
+    padding: 8px;
+    border-radius: 25px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn i {
+    margin-right: 8px;
+}
+
+.google-btn {
+    background-color: #000000;
+    color: white;
+    border: 1px solid #333;
+}
+
+.facebook-btn {
+    background-color: #000000;
+    color: white;
+    border: 1px solid #333;
+}
+
+
+
+.phone-btn {
+    background-color: #000000;
+    color: white;
+    border: 1px solid #333;
+}
+
+.divider {
+    border-top: 1px solid #333;
+    margin: 24px 0;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    color: white;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #000000;
+    color: white;
+    border: 1px solid #333;
+    box-sizing: border-box;
+}
+
+.password-input {
+    position: relative;
+}
+
+.password-input i {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.login-btn {
+    background-color: #1db954;
+    color: white;
+    margin-top: 8px;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+.forgot-pass, .sign-up {
+    text-align: center;
+    margin-top: 20px;
+    color: #fff;
+}
+
+.forgot-pass span, .sign-up span {
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+}
+
+.forgot-pass span:hover, .sign-up span:hover {
+    text-decoration: underline;
+    color: #1db954;
+}

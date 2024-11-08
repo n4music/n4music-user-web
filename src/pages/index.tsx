@@ -1,4 +1,3 @@
-import Image from "next/image";
 import localFont from "next/font/local";
 import logoImg from '@/images/Logo.png'
 import albumImg from '@/images/eminem.jpg'
@@ -8,13 +7,13 @@ const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
-});
+})
 
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
-});
+})
 
 export default function Home() {
   return (
@@ -93,10 +92,12 @@ export default function Home() {
               </li>
               <li className="divider">|</li>
               <li>
-                <a href="#">Sign Up</a>
+                <a href="/sign-up/step1">Sign Up</a>
               </li>
             </ul>
-            <button type="button">Log In</button>
+            <Link href="/login">
+  <button type="button">Log In</button>
+</Link>
           </div>
         </div>
 

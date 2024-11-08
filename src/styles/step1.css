@@ -1,0 +1,150 @@
+.signup1-wrapper {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(rgb(40, 40, 40), rgb(0, 0, 0));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container-signup1 {
+    background-color: #151515;
+    width: 750px;
+    padding: 50px 200px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 40px 0px;
+}
+
+.header-signup1 {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.header-signup1 img {
+    width: 200px;
+    margin: 0 auto;
+    display: block;
+}
+
+.header-signup1 h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    margin-top: 16px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    background-color: #000000;
+    border: 1px solid #333;
+    color: white;
+    box-sizing: border-box;
+}
+
+.phone-link {
+    text-align: right;
+    margin-bottom: 16px;
+}
+
+.phone-link a {
+    color: #1db954;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.phone-link a:hover {
+    text-decoration: underline;
+}
+
+.submit-btn {
+    width: 100%;
+    background-color: #1db954;
+    color: white;
+    font-weight: bold;
+    padding: 14px;
+    border: none;
+    border-radius: 25px;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.divider hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid #333;
+}
+
+.divider span {
+    padding: 0 20px;
+    color: white;
+}
+
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.social-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
+    color: white;
+    font-weight: bold;
+    padding: 12px;
+    border: 1px solid #333;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.social-btn i {
+    margin-right: 10px;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-link p {
+    font-size: 14px;
+    color: white;
+}
+
+.login-link a {
+    color: #1db954;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+button:hover {
+    opacity: 0.9;
+}
