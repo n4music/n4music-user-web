@@ -2,8 +2,15 @@ import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import logoImg from '@/images/Logo.png';
+import { useRouter } from 'next/router';
 
 export default function SignUp() {
+  const router = useRouter();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push('./step2');  // Using relative path
+  };
   return (
     <>
       <Head>
@@ -19,7 +26,7 @@ export default function SignUp() {
               <img src={logoImg.src} alt="Logo" />
               <h1>Đăng ký để bắt đầu nghe</h1>
             </div>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="email">Địa chỉ email</label>
                 <input type="email" id="email" name="email" placeholder="name@domain.com"/>

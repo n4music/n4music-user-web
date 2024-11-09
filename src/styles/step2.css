@@ -1,0 +1,139 @@
+.step2-wrapper {
+    background: linear-gradient(rgb(40, 40, 40), rgb(0, 0, 0));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.container-step2 {
+    width: 100%;
+    max-width: 28rem;
+    padding: 2rem;
+    background-color: #151515;
+    border-radius: 8px;
+}
+
+.logo-step2 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.logo-step2 img {
+    width: 150px;
+}
+
+.divider-step2 {
+    position: relative;
+    border-top: 1px solid #4B5563;
+    margin-bottom: 1.5rem;
+}
+
+.divider-step2::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 33.33%;
+    height: 3px;
+    background-color: #1db954;
+}
+
+.header-step2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.step {
+    font-size: 0.875rem;
+    color: #9CA3AF;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.form-group-step2 {
+    margin-bottom: 1rem;
+}
+
+.form-group-step2 label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.password-input-step2 {
+    position: relative;
+}
+
+.password-input-step2 input {
+    width: 100%;
+    padding: 6px;
+    background-color: #000000;
+    border: 1px solid #4B5563;
+    border-radius: 0.25rem;
+    color: white;
+    box-sizing: border-box;
+}
+
+.password-input-step2 input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #22C55E;
+}
+
+.password-input-step2 i {
+    position: absolute;
+    right: 0.75rem;
+    top: 0.75rem;
+    color: #9CA3AF;
+    cursor: pointer;
+}
+
+.requirements-step2 {
+    margin-bottom: 1.5rem;
+}
+
+.requirements-step2 p {
+    font-size: 0.875rem;
+    color: #9CA3AF;
+    margin-bottom: 0.5rem;
+}
+
+.requirements-step2 ul {
+    list-style: none;
+    padding: 0;
+    font-size: 0.875rem;
+    color: #9CA3AF;
+}
+
+.requirements-step2 li {
+    margin-bottom: 0.5rem;
+}
+
+button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #22C55E;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #16A34A;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #22C55E;
+}
+
