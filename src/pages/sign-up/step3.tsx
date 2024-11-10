@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
+import Image from 'next/image';
 import logoImg from '@/images/Logo.png';
 
 export default function Step3() {
@@ -14,7 +14,13 @@ export default function Step3() {
       <div className="step3-wrapper">
         <div className="container-step3">
           <div className="logo-step3">
-            <img src={logoImg.src} alt="Logo" />
+            <Image 
+              src="/path/to/your/image"
+              alt="description"
+              width={500}  // adjust based on your needs
+              height={300} // adjust based on your needs
+              priority     // if this is above the fold
+            />
           </div>
           
           <div className="progress-bar">

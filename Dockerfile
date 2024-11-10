@@ -1,38 +1,38 @@
-# Base Image
-FROM node:20-alpine AS base
-LABEL author="nguyenybin2015@gmail.com"
-
-WORKDIR /app
-COPY package.json package-lock.json ./
-
-# Install dependencies
-RUN apk add --no-cache git python3 make g++ \
-    && npm i --legacy-peer-deps \
-    && npm cache clean --force
-
-# Build Image
-FROM node:20-alpine AS build
-LABEL author="nguyenybin2015@gmail.com"
-
-WORKDIR /app
-COPY --from=base /app/node_modules ./node_modules
-COPY . .
-
-RUN apk add --no-cache git curl \
-    && npm run build \
-    && rm -rf node_modules \
-    && npm install --production --frozen-lockfile --ignore-scripts --prefer-offline
-
-# Production Image
-FROM node:20-alpine AS production
-LABEL author="nguyenybin2015@gmail.com"
+# Builder stage
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-COPY --from=build /app/package.json /app/package-lock.json ./
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/.next ./.next
-COPY --from=build /app/public ./public
+# Install dependencies first with legacy peer deps
+COPY package*.json ./
+RUN npm ci --legacy-peer-deps
+
+# Copy necessary files
+COPY next.config.js ./
+COPY tsconfig.json ./
+COPY public ./public
+COPY src ./src
+
+# Set environment variables
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+
+# Build with verbose logging
+RUN npm run build || (cat .next/build-error.log && exit 1)
+
+# Production stage
+FROM node:18-alpine AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Copy necessary files from builder
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
 EXPOSE 3000
-CMD ["npm", "start"]
+
+CMD ["node", "server.js"]

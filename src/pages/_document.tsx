@@ -4,9 +4,8 @@ import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
 import type { DocumentContext } from 'next/document';
 
 const MyDocument = () => (
-  <Html lang="vi">
+  <Html lang="en">
     <Head>
-      <title>Music web</title>
       <link
         rel="stylesheet" 
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -19,7 +18,10 @@ const MyDocument = () => (
         integrity="sha384-Gn5384xq1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAi56JXm"
         crossOrigin="anonymous"
       />
-      <script src="https://kit.fontawesome.com/23cecef777.js" crossOrigin="anonymous"></script>
+      <script
+        async
+        src="https://your-script-url.js"
+      />
     </Head>
     <body>
       <Main />

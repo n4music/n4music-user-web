@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import logoImg from '@/images/Logo.png'
 import albumImg from '@/images/eminem.jpg'
 import Link from 'next/link';
+import Image from 'next/image';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -21,7 +22,7 @@ export default function Home() {
       <div className="sidebar">
         <div className="logo">
           <a href="#">
-          <img src={logoImg.src} alt="Logo" />
+            <Image src={logoImg.src} alt="Logo" width={500} height={300} />
           </a>
         </div>
 
@@ -68,19 +69,18 @@ export default function Home() {
           </ul>
         </div>
 
-       
       </div>
 
       <div className="main-container">
         <div className="topbar">
-          
+
           <div className="search-bar">
-    <input 
-      type="text" 
-      placeholder="Bạn muốn nghe gì?"
-    />
-    <i className="fas fa-search search-icon"></i>
-  </div>
+            <input
+              type="text"
+              placeholder="Bạn muốn nghe gì?"
+            />
+            <i className="fas fa-search search-icon"></i>
+          </div>
 
           <div className="navbar">
             <ul>
@@ -96,8 +96,8 @@ export default function Home() {
               </li>
             </ul>
             <Link href="/login">
-  <button type="button">Log In</button>
-</Link>
+              <button type="button">Log In</button>
+            </Link>
           </div>
         </div>
 
@@ -105,19 +105,19 @@ export default function Home() {
           <h2>Nhạc thịnh hành</h2>
 
           <div className="list">
-          <Link href="/play-music">
-  <div className="item">
-    <img src={albumImg.src} alt="Album"/>
-    <div className="play">
-      <span className="fa fa-play"></span>
-    </div>
-    <h4>Peaceful Piano</h4>
-    <p>Relax and indulge with beautiful piano pieces</p>
-  </div>
-</Link>
+            <Link href="/play-music">
+              <div className="item">
+                <Image src={albumImg.src} alt="Album" width={500} height={300} />
+                <div className="play">
+                  <span className="fa fa-play"></span>
+                </div>
+                <h4>Peaceful Piano</h4>
+                <p>Relax and indulge with beautiful piano pieces</p>
+              </div>
+            </Link>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -126,7 +126,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -135,7 +135,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -144,7 +144,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -153,7 +153,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -162,7 +162,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -171,7 +171,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -185,7 +185,7 @@ export default function Home() {
           <h2>Nghệ sĩ phổ biến</h2>
           <div className="list">
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -194,7 +194,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -203,7 +203,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -212,7 +212,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -221,7 +221,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -230,7 +230,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -239,7 +239,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -248,7 +248,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -262,7 +262,7 @@ export default function Home() {
           <h2>Album phổ biến</h2>
           <div className="list">
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -271,7 +271,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -280,7 +280,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -289,7 +289,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -298,7 +298,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -307,7 +307,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -316,7 +316,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -325,7 +325,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -340,7 +340,7 @@ export default function Home() {
           <h2>Bảng xếp hạng </h2>
           <div className="list">
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -349,7 +349,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -358,7 +358,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -367,7 +367,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -376,7 +376,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -385,7 +385,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -394,7 +394,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -403,7 +403,7 @@ export default function Home() {
             </div>
 
             <div className="item">
-              <img src={albumImg.src} alt="Album"/>
+              <Image src={albumImg.src} alt="Album" width={500} height={300} />
               <div className="play">
                 <span className="fa fa-play"></span>
               </div>
@@ -415,10 +415,8 @@ export default function Home() {
           <hr />
         </div>
 
-        
       </div>
 
-      
-      </div>
-    );
-  }
+    </div>
+  );
+}
