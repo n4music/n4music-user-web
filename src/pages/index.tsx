@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import logoImg from '@/images/Logo.png'
 import albumImg from '@/images/eminem.jpg'
+import Head from 'next/head';
 import Link from 'next/link';
 
 const geistSans = localFont({
@@ -18,6 +19,9 @@ const geistMono = localFont({
 export default function Home() {
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} main`}>
+      <Head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+      </Head>
       <div className="sidebar">
         <div className="logo">
           <a href="#">
@@ -27,12 +31,13 @@ export default function Home() {
 
         <div className="navigation">
           <ul>
-            <li>
-              <a href="#">
-                <span className="fa fa-home"></span>
-                <span>Home</span>
-              </a>
-            </li>
+          <li>
+  <Link href="/">
+    <span className="fa fa-home"></span>
+    <span>Home</span>
+  </Link>
+</li>
+
 
             <li>
               <a href="#">
@@ -42,11 +47,12 @@ export default function Home() {
             </li>
 
             <li>
-              <a href="#">
-                <span className="fa fas fa-book"></span>
-                <span>Your Library</span>
-              </a>
-            </li>
+  <Link href="/playlist-like">
+    <span className="fa fa-home"></span>
+    <span>Your Playlist</span>
+  </Link>
+</li>
+
           </ul>
         </div>
 
@@ -60,11 +66,11 @@ export default function Home() {
             </li>
 
             <li>
-              <a href="#">
-                <span className="fa fas fa-heart"></span>
-                <span>Liked Songs</span>
-              </a>
-            </li>
+  <Link href="/playlist-like">
+    <span className="fa fa-home"></span>
+    <span>Your Playlist</span>
+  </Link>
+</li>
           </ul>
         </div>
 
@@ -105,7 +111,7 @@ export default function Home() {
           <h2>Nhạc thịnh hành</h2>
 
           <div className="list">
-          <Link href="/play-music">
+          <Link href="/play">
   <div className="item">
     <img src={albumImg.src} alt="Album"/>
     <div className="play">
@@ -261,14 +267,16 @@ export default function Home() {
         <div className="spotify-playlists">
           <h2>Album phổ biến</h2>
           <div className="list">
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Mood Booster</h4>
-              <p>Get happy with today's dose of feel-good...</p>
-            </div>
+          <Link href="/list">
+  <div className="item">
+    <img src={albumImg.src} alt="Album"/>
+    <div className="play">
+      <span className="fa fa-play"></span>
+    </div>
+    <h4>Mood Booster</h4>
+    <p>Get happy with today's dose of feel-good...</p>
+  </div>
+</Link>
 
             <div className="item">
               <img src={albumImg.src} alt="Album"/>

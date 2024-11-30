@@ -2,8 +2,15 @@ import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import logoImg from '@/images/Logo.png';
+import { useRouter } from 'next/router';
 
 export default function Step3() {
+  const router = useRouter();
+
+  const chuyenTrang = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push('./step4');  
+  };
   return (
     <>
       <Head>
@@ -21,9 +28,9 @@ export default function Step3() {
             <div className="progress-fill"></div>
           </div>
           <h2>Bước 2/3</h2>
-          <h1>Giới thiệu thông tin về bản thân bạn</h1>
+          <h1>Thông tin về bản thân bạn</h1>
           
-          <form >
+          <form onSubmit={chuyenTrang}>
             <div className="form-group">
               <label htmlFor="name">Biệt danh</label>
               <p className="hint">Tên này sẽ xuất hiện trên hồ sơ của bạn</p>

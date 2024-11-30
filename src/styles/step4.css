@@ -1,4 +1,4 @@
-.step3-wrapper {
+.step4-wrapper {
     
     background: linear-gradient(rgb(40, 40, 40), rgb(0, 0, 0));
     color: white;
@@ -10,7 +10,7 @@
     font-family: system-ui, -apple-system, sans-serif;
 }
 
-.container-step3 {
+.container-step4 {
     margin: 40px 0px;
     width: 100%;
     max-width: 28rem;
@@ -19,13 +19,13 @@
     border-radius: 8px;
 }
 
-.logo-step3 {
+.logo-step4 {
     display: flex;
     justify-content: center;
     margin-bottom: 1rem;
 }
 
-.logo-step3 img {
+.logo-step4 img {
     width: 150px;
 }
 
@@ -40,8 +40,8 @@
 
 .progress-fill {
     position: absolute;
-    left: 33%;
-    width: 33%;
+    left: 66.66%;
+   
     height: 100%;
     background-color: #22C55E;
 }
@@ -58,9 +58,6 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
-.form-group {
-    margin-bottom: 1rem;
-}
 
 label {
     display: block;
@@ -69,20 +66,7 @@ label {
     margin-bottom: 0.5rem;
 }
 
-.hint {
-    font-size: 0.75rem;
-    margin-bottom: 0.5rem;
-    color: #9CA3AF;
-}
 
-.hint a {
-    color: #1db954;
-    text-decoration: none;
-}
-
-.hint a:hover {
-    text-decoration: underline;
-}
 
 input[type="text"],
 select {
@@ -94,35 +78,11 @@ select {
     color: white;
 }
 
-.date-inputs {
-    display: flex;
-    gap: 0.5rem;
-}
 
-.date-inputs input,
-.date-inputs select {
-    width: 33.333%;
-}
 
-.gender-options {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: flex-start;  /* Căn trái thay vì căn giữa */
-}
 
-.radio-option {
-    display: flex;
-    align-items: center;
-    width: 50px;  /* Đảm bảo chiều rộng đầy đủ */
-    justify-content: flex-start;  /* Căn trái các phần tử bên trong */
-}
 
-.radio-option input[type="radio"] {
-    margin-right: 0.5rem;
-}
-
-.step3-wrapper button {
+.step4-wrapper button {
     width: 100%;
     padding: 0.75rem;
     background-color: #1db954;
@@ -134,6 +94,6 @@ select {
     margin-top: 1.5rem;
 }
 
-.step3-wrapper button:hover {
+.step4-wrapper button:hover {
     background-color: #16A34A;
 }
