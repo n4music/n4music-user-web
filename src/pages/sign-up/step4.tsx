@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import Head from 'next/head';
 import logoImg from '@/images/Logo.png';
@@ -40,3 +41,16 @@ export default function Step4() {
     </>
   );
 }
+=======
+import { FC } from 'react';
+
+const Step4: FC = () => {
+  return (
+    <div>
+      <h1>Step 4</h1>
+    </div>
+  );
+};
+
+export default Step4;
+>>>>>>> d5245a1fb927a84dacdf62dee710df5770b63bab

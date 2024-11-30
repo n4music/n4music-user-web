@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
 
 import logoImg from '@/images/Logo.png';
 import { useRouter } from 'next/router';
@@ -20,7 +21,13 @@ export default function Step2() {
       <div className="step2-wrapper">
         <div className="container-step2">
           <div className="logo-step2">
-            <img src={logoImg.src} alt="Logo" />
+            <Image 
+              src={logoImg.src}
+              alt="Logo"
+              width={500}  // adjust based on your needs
+              height={300} // adjust based on your needs
+              priority     // if this is above the fold
+            />
           </div>
           <div className="divider-step2"></div>
           <div className="header-step2">
