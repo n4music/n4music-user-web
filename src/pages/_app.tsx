@@ -7,6 +7,7 @@ import '@/styles/step4.css'
 import '@/styles/list.css'
 import '@/styles/play.css'
 import '@/styles/playbar.css'
+import '@/styles/create-playlist.css'
 
 import type { AppProps } from "next/app"
 
