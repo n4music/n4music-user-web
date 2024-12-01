@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 import CreatePlaylistModal from '../components/CreatePlaylistModal';
 
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -19,13 +18,16 @@ const geistMono = localFont({
   weight: "100 900",
 })
 
-export default function Home() {
+interface HomeProps {
+  onShowPlaybar: () => void;
+}
+
+export default function Home({ onShowPlaybar }: HomeProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCreatePlaylist = (playlistName: string) => {
     console.log('Tạo playlist mới:', playlistName);
   };
-
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} main`}>
       <Head>
@@ -114,16 +116,19 @@ export default function Home() {
         <div className="spotify-playlists">
           <h2>Nhạc thịnh hành</h2>
           <div className="list">
-            <Link href="/play">
-              <div className="item">
-                <img src={albumImg.src} alt="Album"/>
-                <div className="play">
-                  <span className="fa fa-play"></span>
-                </div>
-                <h4>Peaceful Piano</h4>
-                <p>Relax and indulge with beautiful piano pieces</p>
-              </div>
-            </Link>
+          <Link 
+      href="/play" 
+      onClick={() => onShowPlaybar()}
+    >
+      <div className="item">
+        <img src={albumImg.src} alt="Album"/>
+        <div className="play">
+          <span className="fa fa-play"></span>
+        </div>
+        <h4>Peaceful Piano</h4>
+        <p>Relax and indulge with beautiful piano pieces</p>
+      </div>
+    </Link>
 
             
           </div>
@@ -313,5 +318,4 @@ export default function Home() {
       />
     </div>
   );
-}
-
+  }

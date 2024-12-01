@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import "@/styles/globals.css"
 import "@/styles/login.css"
 import "@/styles/step1.css"
@@ -8,9 +9,19 @@ import '@/styles/list.css'
 import '@/styles/play.css'
 import '@/styles/playbar.css'
 import '@/styles/create-playlist.css'
-
 import type { AppProps } from "next/app"
+import Playbar from '@/components/playbar'
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  const [isPlaybarVisible, setPlaybarVisible] = useState(false);
+
+  return (
+    <>
+      <Component {...pageProps} onShowPlaybar={() => setPlaybarVisible(true)} />
+      <Playbar 
+        isVisible={isPlaybarVisible} 
+        onClose={() => setPlaybarVisible(false)} 
+      />
+    </>
+  );
 }

@@ -1,31 +1,15 @@
 import { useState } from 'react';
-import Head from 'next/head';
-import localFont from "next/font/local";
 import albumImg from '@/images/Logo.png';
 
-const geistSans = localFont({
-    src: "./fonts/GeistVF.woff",
-    variable: "--font-geist-sans",
-    weight: "100 900",
-  })
-  
-  const geistMono = localFont({
-    src: "./fonts/GeistMonoVF.woff",
-    variable: "--font-geist-mono",
-    weight: "100 900",
-  })
-  
-interface PlayerControlsProps {
-  currentTime: string;
-  totalDuration: string;
+interface PlaybarProps {
+  isVisible: boolean;
+  onClose: () => void;
 }
 
-export default function PlayerControls({ currentTime, totalDuration }: PlayerControlsProps) {
+export default function Playbar({ isVisible, onClose }: PlaybarProps) {
+  if (!isVisible) return null;
+
   return (
-    <div className={`${geistSans.variable} ${geistMono.variable} main`}>
-    <Head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    </Head>
     <div className="player-controls">
       <div className="now-playing">
         <img src={albumImg.src} alt="Album" width="50px" height="50px" />
@@ -54,11 +38,11 @@ export default function PlayerControls({ currentTime, totalDuration }: PlayerCon
           </button>
         </div>
         <div className="progress-bar">
-          <span className="time">{currentTime}</span>
+          <span className="time">0:00</span>
           <div className="progress">
             <div className="progress-fill" style={{ width: '20%' }}></div>
           </div>
-          <span className="time">{totalDuration}</span>
+          <span className="time">3:45</span>
         </div>
       </div>
 
@@ -67,10 +51,13 @@ export default function PlayerControls({ currentTime, totalDuration }: PlayerCon
         <div className="volume-bar">
           <div className="volume-fill" style={{ width: '70%' }}></div>
         </div>
-        <i className="fas fa-list-ul icon"></i>
-        
+        <div className="end-icon">
+        <i className="fas fa-list-ul icon" ></i>
+        <i className="fas fa-arrow-down icon"></i>
+        <i className="fas fa-heart icon"></i>
+        <i className="fas fa-times icon" onClick={onClose} ></i>
+        </div>
       </div>
-    </div>
     </div>
   );
 }
