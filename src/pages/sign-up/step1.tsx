@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import Image from 'next/image';
+import logoImg from '@/images/Logo.png'
 import { useRouter } from 'next/router';
 
 export default function SignUp() {
@@ -23,13 +23,7 @@ export default function SignUp() {
         <main>
           <div className="container-signup1">
             <div className="header-signup1">
-              <Image 
-                src="/images/Logo.png"
-                alt="Logo"
-                width={150}
-                height={50}
-                priority
-              />
+            <img src={logoImg.src} alt="Logo" />
               <h1>Đăng ký để bắt đầu nghe</h1>
             </div>
             <form onSubmit={handleSubmit}>
