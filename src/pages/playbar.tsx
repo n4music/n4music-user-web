@@ -68,6 +68,7 @@ export default function PlayerControls({ currentTime, totalDuration }: PlayerCon
           <div className="volume-fill" style={{ width: '70%' }}></div>
         </div>
         <i className="fas fa-list-ul icon"></i>
+        
       </div>
     </div>
     </div>

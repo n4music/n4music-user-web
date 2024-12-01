@@ -4,7 +4,7 @@ import albumImg from '@/images/eminem.jpg'
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
-import CreatePlaylistModal from './components/CreatePlaylistModal';
+import CreatePlaylistModal from '../components/CreatePlaylistModal';
 
 
 const geistSans = localFont({
@@ -114,7 +114,7 @@ export default function Home() {
         <div className="spotify-playlists">
           <h2>Nhạc thịnh hành</h2>
           <div className="list">
-            <Link href="/play-music">
+            <Link href="/play">
               <div className="item">
                 <img src={albumImg.src} alt="Album"/>
                 <div className="play">
@@ -125,68 +125,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>RapCaviar</h4>
-              <p>New Music from Lil Baby, Juice WRLD an...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>All out 2010s</h4>
-              <p>The biggest songs of the 2010s. Cover:...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Rock Classics</h4>
-              <p>Rock Legends & epic songs that continue t...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Chill Hits</h4>
-              <p>Kick back to the best new and recent chill...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Viva Latino</h4>
-              <p>Today's top Latin hits elevando nuestra...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Mega Hit Mix</h4>
-              <p>A mega mix of 75 favorites from the last...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>All out 80s</h4>
-              <p>The biggest songs of the 1090s.</p>
-            </div>
+            
           </div>
         </div>
 
@@ -281,68 +220,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Feelin' Good</h4>
-              <p>Feel good with this positively timeless...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Dark & Stormy</h4>
-              <p>Beautifully dark, dramatic tracks.</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Feel Good Piano</h4>
-              <p>Happy vibes for an upbeat morning.</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Feelin' Myself</h4>
-              <p>The hip-hop playlist that's a whole mood...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Chill Tracks</h4>
-              <p>Softer kinda dance</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Feel-Good Indie Rock</h4>
-              <p>The best indie rock vibes - classic and...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>idk.</h4>
-              <p>idk.</p>
-            </div>
+            
           </div>
 
           <hr />
