@@ -53,6 +53,11 @@
     font-weight: bold;
     cursor: pointer;
   }
+  .sidebar .navigation ul li .fas {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+  
   
   .modal-buttons button:first-child {
     background-color: transparent;

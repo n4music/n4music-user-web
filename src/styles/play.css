@@ -226,4 +226,8 @@
     font-size: 14px;
   }
   
- 
+  .sidebar .navigation ul li .fas {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+  

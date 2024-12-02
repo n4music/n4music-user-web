@@ -49,7 +49,7 @@ export default function List() {
             <li>
               <a href="#">
                 <span className="fa fas fa-book"></span>
-                <span>Your Library</span>
+                <span>Your Playlist</span>
               </a>
             </li>
           </ul>

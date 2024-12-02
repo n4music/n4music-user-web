@@ -50,17 +50,17 @@ export default function Home({ onShowPlaybar }: HomeProps) {
             </li>
 
             <li>
-              <a href="#">
-                <span className="fa fa-search"></span>
-                <span>Search List</span>
-              </a>
+              <Link href="/playAI">
+                <span className="fas fa-robot"></span>
+                <span>Tạo nhạc AI</span>
+              </Link>
             </li>
 
             <li>
-              <a href="#">
+              <Link href="/playlist">
                 <span className="fa fas fa-book"></span>
-                <span>Your Library</span>
-              </a>
+                <span>Your Playlist</span>
+              </Link>
             </li>
           </ul>
         </div>
@@ -75,10 +75,10 @@ export default function Home({ onShowPlaybar }: HomeProps) {
             </li>
 
             <li>
-              <a href="#">
+              <Link href="/dow-like">
                 <span className="fa fas fa-heart"></span>
                 <span>Liked Songs</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -100,11 +100,12 @@ export default function Home({ onShowPlaybar }: HomeProps) {
                 <a href="#">Support</a>
               </li>
               <li>
-                <a href="#">Download</a>
+              <Link href="/dow-like">Download</Link>
+                
               </li>
               <li className="divider">|</li>
               <li>
-                <a href="/sign-up/step1">Sign Up</a>
+              <Link href="/sign-up/step1">Sign Up</Link>
               </li>
             </ul>
             <Link href="/login">
@@ -135,79 +136,21 @@ export default function Home({ onShowPlaybar }: HomeProps) {
         </div>
 
         <div className="spotify-playlists">
-          <h2>Nghệ sĩ phổ biến</h2>
+          <h2>Giai điệu tạo bằng AI</h2>
           <div className="list">
-            <div className="item">
+          <Link 
+            href="/play" 
+            onClick={() => onShowPlaybar()}
+            >
+              <div className="item">
               <img src={albumImg.src} alt="Album"/>
               <div className="play">
-                <span className="fa fa-play"></span>
+              <span className="fa fa-play"></span>
               </div>
               <h4>Peaceful Piano</h4>
               <p>Relax and indulge with beautiful piano pieces</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
               </div>
-              <h4>Deep Focus</h4>
-              <p>Keep calm and focus with ambient and pos...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Instrumental Study</h4>
-              <p>Focus with soft study music in the...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>chill lofi study beats</h4>
-              <p>The perfect study beats, twenty four...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Coding Mode</h4>
-              <p>Dedicated to all the programmers out there.</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Focus Flow</h4>
-              <p>Uptempo instrumental hip hop beats.</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Calm Before The Storm</h4>
-              <p>Calm before the storm music.</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Beats to think to</h4>
-              <p>Focus with deep techno and tech house.</p>
-            </div>
+          </Link>
           </div>
         </div>
 
@@ -234,82 +177,72 @@ export default function Home({ onShowPlaybar }: HomeProps) {
         <div className="spotify-playlists">
           <h2>Bảng xếp hạng </h2>
           <div className="list">
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
+          <Link href="/list">
+              <div className="item">
+                <img src={albumImg.src} alt="Album"/>
+                <div className="play">
+                  <span className="fa fa-play"></span>
+                </div>
+                <h4>Mood Booster</h4>
+                <p>Get happy with today's dose of feel-good...</p>
               </div>
-              <h4>Mood Booster</h4>
-              <p>Get happy with today's dose of feel-good...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Feelin' Good</h4>
-              <p>Feel good with this positively timeless...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Dark & Stormy</h4>
-              <p>Beautifully dark, dramatic tracks.</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Feel Good Piano</h4>
-              <p>Happy vibes for an upbeat morning.</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Feelin' Myself</h4>
-              <p>The hip-hop playlist that's a whole mood...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Chill Tracks</h4>
-              <p>Softer kinda dance</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>Feel-Good Indie Rock</h4>
-              <p>The best indie rock vibes - classic and...</p>
-            </div>
-
-            <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-                <span className="fa fa-play"></span>
-              </div>
-              <h4>idk.</h4>
-              <p>idk.</p>
-            </div>
+            </Link>
           </div>
 
           <hr />
           </div>
+          <footer className="footer">
+  <div className="footer-content">
+    {/* Phần 1: Hỗ trợ */}
+    <div className="footer-section">
+      <h4>Hỗ trợ</h4>
+      <ul>
+        <li><Link href="#">Pháp lý</Link></li>
+        <li><Link href="#">Trung tâm an toàn và quyền riêng tư</Link></li>
+        <li><Link href="#">Chính sách quyền riêng tư</Link></li>
+        <li><Link href="#">Cookie</Link></li>
+      </ul>
+    </div>
+
+    {/* Phần 2: Cộng đồng */}
+    <div className="footer-section">
+      <h4>Cộng đồng</h4>
+      <ul>
+        <li><Link href="#">Dành cho các Nghệ sĩ</Link></li>
+        <li><Link href="#">Nhà phát triển</Link></li>
+        <li><Link href="#">Quảng cáo</Link></li>
+        <li><Link href="#">Nhà đầu tư</Link></li>
+        <li><Link href="#">Nhà cung cấp</Link></li>
+      </ul>
+    </div>
+
+    {/* Phần 3: Liên kết hữu ích */}
+    <div className="footer-section">
+      <h4>Liên kết hữu ích</h4>
+      <ul>
+        <li><Link href="#">Ứng dụng Di động Miễn phí</Link></li>
+      </ul>
+    </div>
+
+    {/* Phần 4: Social Links */}
+    <div className="footer-section social">
+      <div className="social-icons">
+        <Link href="#" className="social-icon">
+          <i className="fab fa-twitter"></i>
+        </Link>
+        <Link href="#" className="social-icon">
+          <i className="fab fa-instagram"></i>
+        </Link>
+        <Link href="#" className="social-icon">
+          <i className="fab fa-facebook"></i>
+        </Link>
       </div>
+    </div>
+  </div>
+</footer>
+
+      </div>
+      
 
       <CreatePlaylistModal
         isOpen={isModalOpen}
