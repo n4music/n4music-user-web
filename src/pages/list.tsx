@@ -1,9 +1,12 @@
 import localFont from "next/font/local";
 import logoImg from '@/images/Logo.png'
+import albumImg from '@/images/eminem.jpg'
 import Head from 'next/head';
 import Link from 'next/link';
-import albumImg from '@/images/eminem.jpg'
-import { PlayCircleFilled, HeartOutlined, MoreOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import CreatePlaylistModal from '../components/CreatePlaylistModal';
+import ChoosePlaylist from '../components/chooseplaylist';
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -12,12 +15,30 @@ const geistSans = localFont({
 })
 
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff", 
+  src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 })
 
-export default function List() {
+interface HomeProps {
+  onShowPlaybar: () => void;
+}
+
+export default function List({ onShowPlaybar }: HomeProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isChoosePlaylistOpen, setIsChoosePlaylistOpen] = useState(false);
+  const playlists = [
+    {
+      id: 1,
+      name: 'My Playlist #1',
+      songCount: 10,
+      image: albumImg.src
+    },
+  ];
+
+  const handleCreatePlaylist = (playlistName: string) => {
+    console.log('Tạo playlist mới:', playlistName);
+  };
   return (
     
     <div className={`${geistSans.variable} ${geistMono.variable} main`}>
@@ -30,27 +51,28 @@ export default function List() {
             <img src={logoImg.src} alt="Logo" />
           </a>
         </div>
-        
+
         <div className="navigation">
           <ul>
-          <li>
-  <Link href="/">
-    <span className="fa fa-home"></span>
-    <span>Home</span>
-  </Link>
-</li>
+            <li>
+              <Link href="/">
+                <span className="fa fa-home"></span>
+                <span>Home</span>
+              </Link>
+            </li>
 
             <li>
-              <a href="#">
-                <span className="fa fa-search"></span>
-                <span>Search List</span>
-              </a>
+              <Link href="/playAI">
+                <span className="fas fa-robot"></span>
+                <span>Tạo nhạc AI</span>
+              </Link>
             </li>
+
             <li>
-              <a href="#">
+              <Link href="/playlist">
                 <span className="fa fas fa-book"></span>
                 <span>Your Playlist</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -58,25 +80,29 @@ export default function List() {
         <div className="navigation">
           <ul>
             <li>
-              <a href="#">
+              <a onClick={() => setIsModalOpen(true)} style={{ cursor: 'pointer' }}>
                 <span className="fa fas fa-plus-square"></span>
                 <span>Create Playlist</span>
               </a>
             </li>
+
             <li>
-              <a href="#">
+              <Link href="/dow-like">
                 <span className="fa fas fa-heart"></span>
                 <span>Liked Songs</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
       </div>
 
       <div className="main-container">
-        <div className="topbar">
+      <div className="topbar">
           <div className="search-bar">
-            <input type="text" placeholder="Bạn muốn nghe gì?" />
+            <input 
+              type="text" 
+              placeholder="Bạn muốn nghe gì?"
+            />
             <i className="fas fa-search search-icon"></i>
           </div>
 
@@ -86,11 +112,12 @@ export default function List() {
                 <a href="#">Support</a>
               </li>
               <li>
-                <a href="#">Download</a>
+              <Link href="/dow-like">Download</Link>
+                
               </li>
               <li className="divider">|</li>
               <li>
-                <a href="/sign-up/step1">Sign Up</a>
+              <Link href="/sign-up/step1">Sign Up</Link>
               </li>
             </ul>
             <Link href="/login">
@@ -106,24 +133,29 @@ export default function List() {
             <div className="playlist-info">
               <p className="playlist-type">Playlist</p>
               <h1>K-Pop Ngay Lúc Này</h1>
-              <p className="playlist-description">Fan K-Pop cứng từ hơn lúc này? Ảnh bìa: G-DRAGON, TAEYANG, DAESUNG</p>
-              <div className="playlist-meta">
-                
+              <div className="playlist-meta">    
                 <span>52 bài hát</span>
               </div>
             </div>
           </div>
 
           <div className="playlist-controls">
-  <button className="btn-play">
+          <Link href="/play">
+  <button className="btn-play" onClick={() => onShowPlaybar()}>
     <span className="fa fa-play"></span>
   </button>
+</Link>
+
   <button className="btn-icon">
     <span className="fa fas fa-heart"></span>
   </button>
-  <button className="btn-icon">
-    <span className="fa fas fa-ellipsis-h"></span>
-  </button>
+  <button 
+  className="btn-icon"
+  onClick={() => setIsChoosePlaylistOpen(true)}
+>
+  <span className="fa fas fa-book"></span>
+</button>
+
 </div>
 
 
@@ -138,18 +170,21 @@ export default function List() {
 </div>
 
             <div className="track-list">
-              <div className="track">
-                <div className="track-number">1</div>
-                <div className="track-info">
-                <img src={albumImg.src} alt="Album" width="40px" height="40px" />
-                  <div>
-                    <div className="track-title">number one girl</div>
-                    <div className="track-artist">ROSÉ</div>
-                  </div>
-                </div>
-                <div className="track-album">number one girl</div>
-                <div className="track-duration">3:36</div>
-              </div>
+            <Link href="/play" onClick={() => onShowPlaybar()}>
+  <div className="track" style={{cursor: 'pointer'}}>
+    <div className="track-number">1</div>
+    <div className="track-info">
+      <img src={albumImg.src} alt="Album" width="40px" height="40px" />
+      <div>
+        <div className="track-title">number one girl</div>
+        <div className="track-artist">ROSÉ</div>
+      </div>
+    </div>
+    <div className="track-album">number one girl</div>
+    <div className="track-duration">3:36</div>
+  </div>
+</Link>
+
 
               <div className="track">
                 <div className="track-number">2</div>
@@ -204,6 +239,17 @@ export default function List() {
           </div>
         </div>
       </div>
+      <CreatePlaylistModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleCreatePlaylist}
+      />
+      
+<ChoosePlaylist
+  isOpen={isChoosePlaylistOpen}
+  onClose={() => setIsChoosePlaylistOpen(false)}
+  playlists={playlists}
+/>
     </div>
   );
 }

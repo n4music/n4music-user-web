@@ -12,6 +12,7 @@ import '@/styles/create-playlist.css'
 import '@/styles/dow-like.css'
 import '@/styles/playlist.css'
 import '@/styles/playAI.css'
+import '@/styles/chooseplaylist.css'
 import type { AppProps } from "next/app"
 import Playbar from '@/components/playbar'
 
