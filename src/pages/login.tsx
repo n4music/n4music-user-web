@@ -2,8 +2,57 @@ import React from 'react';
 import Head from 'next/head';
 import logoImg from '@/images/Logo.png'
 import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Login() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState('');
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Đang gửi yêu cầu đăng nhập với:', formData);
+
+    try {
+      const response = await fetch('https://bill.binnguyen.id.vn/v1/auth/sign-in', {
+        method: 'POST',
+        headers: {
+          'accept': '*/*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      console.log('Trạng thái phản hồi:', response.status);
+
+      if (!response.ok) {
+        throw new Error('Đăng nhập thất bại');
+      }
+
+      const data = await response.json();
+      console.log('Dữ liệu phản hồi:', data);
+
+      // Lưu token vào localStorage
+      localStorage.setItem('token', data.token);
+      
+      // Lưu thông tin user mặc định nếu API không trả về
+      const userInfo = {
+        nickname: "Bin Nguyen",
+        avatar: "/default-avatar.png"
+      };
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      
+      router.push('/');
+    } catch (err) {
+      console.error('Lỗi đăng nhập:', err);
+      setError('Email hoặc mật khẩu không đúng');
+    }
+  };
+
   return (
     <>
       <Head>
@@ -25,24 +74,35 @@ export default function Login() {
                 <button className="btn facebook-btn">
                     <i className="fab fa-facebook-f"></i> Tiếp tục bằng Facebook
                 </button>
-                <button className="btn phone-btn">
-                    Tiếp tục bằng số điện thoại
-                </button>
+
             </div>
             <div className="divider"></div>
-            <form className="login-form">
+            <form className="login-form" onSubmit={handleLogin}>
                 <div className="form-group">
                     <label htmlFor="email">Email hoặc tên người dùng</label>
-                    <input type="text" id="email" placeholder="Email hoặc tên người dùng" />
+                    <input 
+                        type="text" 
+                        id="email" 
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        placeholder="Email hoặc tên người dùng" 
+                    />
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Mật khẩu</label>
                     <div className="password-input">
-                        <input type="password" id="password" placeholder="Mật khẩu" />
+                        <input 
+                            type="password" 
+                            id="password" 
+                            value={formData.password}
+                            onChange={(e) => setFormData({...formData, password: e.target.value})}
+                            placeholder="Mật khẩu" 
+                        />
                         <i className="fas fa-eye-slash"></i>
                     </div>
                 </div>
-                <button className="btn login-btn">Đăng nhập</button>
+                {error && <div className="error-message">{error}</div>}
+                <button type="submit" className="btn login-btn">Đăng nhập</button>
             </form>
             <div className='forgot-pass'>
             <span>Quên mật khẩu</span>

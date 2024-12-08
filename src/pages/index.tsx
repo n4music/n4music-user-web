@@ -3,8 +3,9 @@ import logoImg from '@/images/Logo.png'
 import albumImg from '@/images/eminem.jpg'
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CreatePlaylistModal from '../components/CreatePlaylistModal';
+import UserMenu from '../components/UserMenu';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,8 +23,61 @@ interface HomeProps {
   onShowPlaybar: () => void;
 }
 
+interface UserInfo {
+  nickname: string;
+  avatar: string;
+}
+
 export default function Home({ onShowPlaybar }: HomeProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    // Kiểm tra token và userInfo trong localStorage
+    const token = localStorage.getItem('token');
+    const storedUserInfo = localStorage.getItem('userInfo');
+    
+    console.log('Stored token:', token); // Debug log
+    console.log('Stored userInfo:', storedUserInfo); // Debug log
+
+    if (token && storedUserInfo) {
+      setIsLoggedIn(true);
+      setUserInfo(JSON.parse(storedUserInfo));
+    }
+  }, []); // Chạy một lần khi component mount
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      
+      const response = await fetch('https://bill.binnguyen.id.vn/v1/auth/logout', {
+        method: 'POST',
+        headers: {
+          'accept': '*/*',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
+      // Sau khi logout thành công từ server
+      localStorage.removeItem('token');
+      localStorage.removeItem('userInfo');
+      setIsLoggedIn(false);
+      setUserInfo(null);
+
+    } catch (error) {
+      console.error('Lỗi khi logout:', error);
+      // Vẫn xóa thông tin local trong trường hợp lỗi
+      localStorage.removeItem('token');
+      localStorage.removeItem('userInfo');
+      setIsLoggedIn(false);
+      setUserInfo(null);
+    }
+  };
 
   const handleCreatePlaylist = (playlistName: string) => {
     console.log('Tạo playlist mới:', playlistName);
@@ -96,21 +150,15 @@ export default function Home({ onShowPlaybar }: HomeProps) {
 
           <div className="navbar">
             <ul>
-              <li>
-                <a href="#">Support</a>
-              </li>
-              <li>
-              <Link href="/dow-like">Download</Link>
-                
-              </li>
+              <li><a href="#">Support</a></li>
+              <li><Link href="/dow-like">Download</Link></li>
               <li className="divider">|</li>
-              <li>
-              <Link href="/sign-up/step1">Sign Up</Link>
-              </li>
             </ul>
-            <Link href="/login">
-              <button type="button">Log In</button>
-            </Link>
+            <UserMenu 
+              isLoggedIn={isLoggedIn}
+              userInfo={userInfo}
+              onLogout={handleLogout}
+            />
           </div>
         </div>
 
