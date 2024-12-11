@@ -3,8 +3,9 @@ import logoImg from '@/images/Logo.png'
 import albumImg from '@/images/eminem.jpg'
 import Head from 'next/head';
 import Link from 'next/link';
-import Image from 'next/image';
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
+import UserMenu from '../components/UserMenu';
+import CreatePlaylistModal from "@/components/CreatePlaylistModal";
 
 interface Song {
   id: string;
@@ -35,76 +36,147 @@ const geistMono = localFont({
   weight: "100 900",
 })
 
-export default function Play() {
-  const [currentTime, setCurrentTime] = useState('0:04')
-  const totalDuration = '3:40'
+interface HomeProps {
+  onShowPlaybar: () => void;
+}
 
-  const suggestedSongs: Song[] = [
-    {
-      id: '1',
-      title: 'TÌNH ĐẦU QUÁ CHÉN (feat. Quang Hùng MasterD, Negav, Pháp Kiều & Erik)',
-      artist: 'ANH TRAI "SAY HI", Quang Hùng MasterD, Negav, Pháp Kiều, ERIK',
-      views: 6480432,
-      duration: '5:16',
-      image: '/placeholder.svg'
-    },
-    {
-      id: '2',
-      title: 'SAO HANG A (feat. HIEUTHUHAI, Dương Domic, Song Luân, JSOL & Trần Đăng Dương)',
-      artist: 'ANH TRAI "SAY HI", HIEUTHUHAI, Dương Domic, Song Luân, JSOL, Trần Đăng Dương',
-      views: 8443957,
-      duration: '4:12',
-      image: '/placeholder.svg'
-    },
-    {
-      id: '3',
-      title: 'Say Yes (Vietnamese Version)',
-      artist: 'Various Artists',
-      views: 5234123,
-      duration: '3:45',
-      image: '/placeholder.svg'
-    }
-  ];
+interface UserInfo {
+  nickname: string;
+  avatar: string;
+}
 
-  const albums: Album[] = [
-    {
-      id: '1',
-      title: 'Đi Giữa Trời Rực Rỡ',
-      year: '2024',
-      type: 'Đĩa đơn',
-      image: '/placeholder.svg'
-    },
-    {
-      id: '2',
-      title: '#Trầm',
-      year: '2022',
-      type: 'EP',
-      image: '/placeholder.svg'
-    },
-    {
-      id: '3',
-      title: 'Yêu Đừng Sợ Đau (Remake)',
-      year: '2023',
-      type: 'Đĩa đơn',
-      image: '/placeholder.svg'
-    },
-    {
-      id: '4',
-      title: 'Như Nào',
-      year: '2024',
-      type: 'Đĩa đơn',
-      image: '/placeholder.svg'
-    },
-    {
-      id: '5',
-      title: 'Yêu Đừng Sợ Đau',
-      year: '2021',
-      type: 'Đĩa đơn',
-      image: '/placeholder.svg'
-    },
-    
-  ];
 
+  export default function Play({ onShowPlaybar }: HomeProps) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+    const [isChoosePlaylistOpen, setIsChoosePlaylistOpen] = useState(false);
+    const playlists = [
+      {
+        id: 1,
+        name: 'My Playlist #1',
+        songCount: 10,
+        image: albumImg.src
+      },
+    ];
+  
+    useEffect(() => {
+      // Kiểm tra token và userInfo trong localStorage
+      const token = localStorage.getItem('token');
+      const storedUserInfo = localStorage.getItem('userInfo');
+      
+      console.log('Stored token:', token); // Debug log
+      console.log('Stored userInfo:', storedUserInfo); // Debug log
+  
+      if (token && storedUserInfo) {
+        setIsLoggedIn(true);
+        setUserInfo(JSON.parse(storedUserInfo));
+      }
+    }, []); // Chạy một lần khi component mount
+  
+    const handleLogout = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        
+        const response = await fetch('https://bill.binnguyen.id.vn/v1/auth/logout', {
+          method: 'POST',
+          headers: {
+            'accept': '*/*',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+  
+        if (!response.ok) {
+          throw new Error('Logout failed');
+        }
+  
+        // Sau khi logout thành công từ server
+        localStorage.removeItem('token');
+        localStorage.removeItem('userInfo');
+        setIsLoggedIn(false);
+        setUserInfo(null);
+  
+      } catch (error) {
+        console.error('Lỗi khi logout:', error);
+        // Vẫn xóa thông tin local trong trường hợp lỗi
+        localStorage.removeItem('token');
+        localStorage.removeItem('userInfo');
+        setIsLoggedIn(false);
+        setUserInfo(null);
+      }
+    };
+  
+    const handleCreatePlaylist = (playlistName: string) => {
+      console.log('Tạo playlist mới:', playlistName);
+    };
+    const [currentTime, setCurrentTime] = useState('0:04')
+    const totalDuration = '3:40'
+  
+    const suggestedSongs: Song[] = [
+      {
+        id: '1',
+        title: 'TÌNH ĐẦU QUÁ CHÉN (feat. Quang Hùng MasterD, Negav, Pháp Kiều & Erik)',
+        artist: 'ANH TRAI "SAY HI", Quang Hùng MasterD, Negav, Pháp Kiều, ERIK',
+        views: 6480432,
+        duration: '5:16',
+        image: '/placeholder.svg'
+      },
+      {
+        id: '2',
+        title: 'SAO HANG A (feat. HIEUTHUHAI, Dương Domic, Song Luân, JSOL & Trần Đăng Dương)',
+        artist: 'ANH TRAI "SAY HI", HIEUTHUHAI, Dương Domic, Song Luân, JSOL, Trần Đăng Dương',
+        views: 8443957,
+        duration: '4:12',
+        image: '/placeholder.svg'
+      },
+      {
+        id: '3',
+        title: 'Say Yes (Vietnamese Version)',
+        artist: 'Various Artists',
+        views: 5234123,
+        duration: '3:45',
+        image: '/placeholder.svg'
+      }
+    ];
+  
+    const albums: Album[] = [
+      {
+        id: '1',
+        title: 'Đi Giữa Trời Rực Rỡ',
+        year: '2024',
+        type: 'Đĩa đơn',
+        image: '/placeholder.svg'
+      },
+      {
+        id: '2',
+        title: '#Trầm',
+        year: '2022',
+        type: 'EP',
+        image: '/placeholder.svg'
+      },
+      {
+        id: '3',
+        title: 'Yêu Đừng Sợ Đau (Remake)',
+        year: '2023',
+        type: 'Đĩa đơn',
+        image: '/placeholder.svg'
+      },
+      {
+        id: '4',
+        title: 'Như Nào',
+        year: '2024',
+        type: 'Đĩa đơn',
+        image: '/placeholder.svg'
+      },
+      {
+        id: '5',
+        title: 'Yêu Đừng Sợ Đau',
+        year: '2021',
+        type: 'Đĩa đơn',
+        image: '/placeholder.svg'
+      },
+      
+    ];
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} main`}>
       <Head>
@@ -117,27 +189,28 @@ export default function Play() {
             <img src={logoImg.src} alt="Logo" />
           </a>
         </div>
-        
+
         <div className="navigation">
           <ul>
-          <li>
-  <Link href="/">
-    <span className="fa fa-home"></span>
-    <span>Home</span>
-  </Link>
-</li>
+            <li>
+              <Link href="/">
+                <span className="fa fa-home"></span>
+                <span>Home</span>
+              </Link>
+            </li>
 
             <li>
-              <a href="#">
-                <span className="fa fa-search"></span>
-                <span>Search List</span>
-              </a>
+              <Link href="/playAI">
+                <span className="fas fa-robot"></span>
+                <span>Tạo nhạc AI</span>
+              </Link>
             </li>
+
             <li>
-              <a href="#">
+              <Link href="/playlist">
                 <span className="fa fas fa-book"></span>
                 <span>Your Playlist</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -145,44 +218,46 @@ export default function Play() {
         <div className="navigation">
           <ul>
             <li>
-              <a href="#">
+              <a onClick={() => setIsModalOpen(true)} style={{ cursor: 'pointer' }}>
                 <span className="fa fas fa-plus-square"></span>
                 <span>Create Playlist</span>
               </a>
             </li>
+
             <li>
-              <a href="#">
+              <Link href="/dow-like">
                 <span className="fa fas fa-heart"></span>
                 <span>Liked Songs</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
       </div>
 
       <div className="main-container">
-        <div className="topbar">
+      <div className="topbar">
           <div className="search-bar">
-            <input type="text" placeholder="Bạn muốn nghe gì?" />
+            <input 
+              type="text" 
+              placeholder="Bạn muốn nghe gì?"
+            />
             <i className="fas fa-search search-icon"></i>
           </div>
 
           <div className="navbar">
             <ul>
-              <li>
-                <a href="#">Support</a>
-              </li>
-              <li>
-                <a href="#">Download</a>
-              </li>
+              <li><a href="#">Support</a></li>
+              <li><Link href="/dow-like">Download</Link></li>
               <li className="divider">|</li>
-              <li>
-                <a href="/sign-up/step1">Sign Up</a>
-              </li>
             </ul>
-            <Link href="/login">
-              <button type="button">Log In</button>
-            </Link>
+            <UserMenu 
+              isLoggedIn={isLoggedIn}
+              userInfo={userInfo && {
+                name: userInfo.nickname,
+                avatar: userInfo.avatar
+              }}
+              onLogout={handleLogout}
+            />
           </div>
         </div>
 
@@ -251,6 +326,12 @@ export default function Play() {
           
         </div>
       </div>
+      
+      <CreatePlaylistModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleCreatePlaylist}
+      />
     </div>
   )
 }

@@ -123,6 +123,12 @@ input {
     top: 50%;
     transform: translateY(-50%);
     color: #666;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.password-input i:hover {
+    color: #fff;
 }
 
 .login-btn {

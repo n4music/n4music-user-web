@@ -32,6 +32,15 @@ export default function Home({ onShowPlaybar }: HomeProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+    const [isChoosePlaylistOpen, setIsChoosePlaylistOpen] = useState(false);
+  const playlists = [
+    {
+      id: 1,
+      name: 'My Playlist #1',
+      songCount: 10,
+      image: albumImg.src
+    },
+  ];
 
   useEffect(() => {
     // Kiểm tra token và userInfo trong localStorage
@@ -156,7 +165,10 @@ export default function Home({ onShowPlaybar }: HomeProps) {
             </ul>
             <UserMenu 
               isLoggedIn={isLoggedIn}
-              userInfo={userInfo}
+              userInfo={userInfo && {
+                name: userInfo.nickname,
+                avatar: userInfo.avatar
+              }}
               onLogout={handleLogout}
             />
           </div>

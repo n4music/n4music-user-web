@@ -3,7 +3,9 @@ import logoImg from '@/images/Logo.png'
 import albumImg from '@/images/eminem.jpg'
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import CreatePlaylistModal from '../components/CreatePlaylistModal';
+import UserMenu from '../components/UserMenu';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,8 +18,15 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
 })
+interface HomeProps {
+  onShowPlaybar: () => void;
+}
 
-export default function UserProfile() {
+interface UserInfo {
+  nickname: string;
+  avatar: string;
+}
+export default function UserProfile({ onShowPlaybar }: HomeProps) {
   const [avatarImage, setAvatarImage] = useState(albumImg.src);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +35,68 @@ export default function UserProfile() {
       const imageUrl = URL.createObjectURL(file);
       setAvatarImage(imageUrl);
     }
+  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [isChoosePlaylistOpen, setIsChoosePlaylistOpen] = useState(false);
+  const playlists = [
+    {
+      id: 1,
+      name: 'My Playlist #1',
+      songCount: 10,
+      image: albumImg.src
+    },
+  ];
+
+  useEffect(() => {
+    // Kiểm tra token và userInfo trong localStorage
+    const token = localStorage.getItem('token');
+    const storedUserInfo = localStorage.getItem('userInfo');
+    
+    console.log('Stored token:', token); // Debug log
+    console.log('Stored userInfo:', storedUserInfo); // Debug log
+
+    if (token && storedUserInfo) {
+      setIsLoggedIn(true);
+      setUserInfo(JSON.parse(storedUserInfo));
+    }
+  }, []); // Chạy một lần khi component mount
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      
+      const response = await fetch('https://bill.binnguyen.id.vn/v1/auth/logout', {
+        method: 'POST',
+        headers: {
+          'accept': '*/*',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
+      // Sau khi logout thành công từ server
+      localStorage.removeItem('token');
+      localStorage.removeItem('userInfo');
+      setIsLoggedIn(false);
+      setUserInfo(null);
+
+    } catch (error) {
+      console.error('Lỗi khi logout:', error);
+      // Vẫn xóa thông tin local trong trường hợp lỗi
+      localStorage.removeItem('token');
+      localStorage.removeItem('userInfo');
+      setIsLoggedIn(false);
+      setUserInfo(null);
+    }
+  };
+
+  const handleCreatePlaylist = (playlistName: string) => {
+    console.log('Tạo playlist mới:', playlistName);
   };
 
   return (
@@ -36,9 +107,9 @@ export default function UserProfile() {
 
       <div className="sidebar">
         <div className="logo">
-          <Link href="/">
+          <a href="#">
             <img src={logoImg.src} alt="Logo" />
-          </Link>
+          </a>
         </div>
 
         <div className="navigation">
@@ -49,12 +120,14 @@ export default function UserProfile() {
                 <span>Home</span>
               </Link>
             </li>
+
             <li>
               <Link href="/playAI">
                 <span className="fas fa-robot"></span>
                 <span>Tạo nhạc AI</span>
               </Link>
             </li>
+
             <li>
               <Link href="/playlist">
                 <span className="fa fas fa-book"></span>
@@ -67,6 +140,13 @@ export default function UserProfile() {
         <div className="navigation">
           <ul>
             <li>
+              <a onClick={() => setIsModalOpen(true)} style={{ cursor: 'pointer' }}>
+                <span className="fa fas fa-plus-square"></span>
+                <span>Create Playlist</span>
+              </a>
+            </li>
+
+            <li>
               <Link href="/dow-like">
                 <span className="fa fas fa-heart"></span>
                 <span>Liked Songs</span>
@@ -77,28 +157,29 @@ export default function UserProfile() {
       </div>
 
       <div className="main-container">
-        <div className="topbar">
+      <div className="topbar">
           <div className="search-bar">
-            <input type="text" placeholder="Bạn muốn nghe gì?" />
+            <input 
+              type="text" 
+              placeholder="Bạn muốn nghe gì?"
+            />
             <i className="fas fa-search search-icon"></i>
           </div>
 
           <div className="navbar">
             <ul>
-              <li>
-                <a href="#">Support</a>
-              </li>
-              <li>
-                <Link href="/dow-like">Download</Link>
-              </li>
+              <li><a href="#">Support</a></li>
+              <li><Link href="/dow-like">Download</Link></li>
               <li className="divider">|</li>
-              <li>
-                <Link href="/sign-up/step1">Sign Up</Link>
-              </li>
             </ul>
-            <Link href="/login">
-              <button type="button">Log In</button>
-            </Link>
+            <UserMenu 
+              isLoggedIn={isLoggedIn}
+              userInfo={userInfo && {
+                name: userInfo.nickname,
+                avatar: userInfo.avatar
+              }}
+              onLogout={handleLogout}
+            />
           </div>
         </div>
 
@@ -153,6 +234,11 @@ export default function UserProfile() {
           </div>
         </div>
       </div>
+      <CreatePlaylistModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleCreatePlaylist}
+      />
     </div>
   );
 }

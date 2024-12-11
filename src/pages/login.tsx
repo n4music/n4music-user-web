@@ -12,6 +12,7 @@ export default function Login() {
     password: '',
   });
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,13 +93,17 @@ export default function Login() {
                     <label htmlFor="password">Mật khẩu</label>
                     <div className="password-input">
                         <input 
-                            type="password" 
+                            type={showPassword ? "text" : "password"}
                             id="password" 
                             value={formData.password}
                             onChange={(e) => setFormData({...formData, password: e.target.value})}
                             placeholder="Mật khẩu" 
                         />
-                        <i className="fas fa-eye-slash"></i>
+                        <i 
+                            className={`fas ${showPassword ? 'fa-eye' : 'fa-eye-slash'}`}
+                            onClick={() => setShowPassword(!showPassword)}
+                            style={{ cursor: 'pointer' }}
+                        />
                     </div>
                 </div>
                 {error && <div className="error-message">{error}</div>}
