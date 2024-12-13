@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useSignUp } from '@/contexts/SignUpContext';
 import logoImg from '@/images/Logo.png';
+import defaultUserImg from '@/images/User.png';
 
 export default function Step3() {
   const router = useRouter();
@@ -90,7 +91,7 @@ export default function Step3() {
       // 4. Lưu thông tin user
       const userInfo = {
         nickname,
-        avatar: "/default-avatar.png"
+        avatar: defaultUserImg.src
       };
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
 

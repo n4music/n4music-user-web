@@ -4,7 +4,7 @@ import logoImg from '@/images/Logo.png'
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-
+import defaultUserImg from '@/images/User.png';
 export default function Login() {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -43,7 +43,7 @@ export default function Login() {
       // Lưu thông tin user mặc định nếu API không trả về
       const userInfo = {
         nickname: "Bin Nguyen",
-        avatar: "/default-avatar.png"
+        avatar: defaultUserImg.src
       };
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
       

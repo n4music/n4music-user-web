@@ -285,44 +285,28 @@ export default function Home({ onShowPlaybar }: HomeProps) {
         </div>
 
         <div className="spotify-playlists">
-          <h2>Nhạc thịnh hành</h2>
+          <h2>Hôm nay nghe gì</h2>
           <div className="list">
           <Link 
-      href="/play" 
-      onClick={() => onShowPlaybar()}
-    >
-      <div className="item">
-        <img src={albumImg.src} alt="Album"/>
-        <div className="play">
+          href="/play" 
+            onClick={() => onShowPlaybar()}
+           >
+           <div className="item">
+             <img src={albumImg.src} alt="Album"/>
+           <div className="play">
           <span className="fa fa-play"></span>
-        </div>
-        <h4>Peaceful Piano</h4>
-        <p>Relax and indulge with beautiful piano pieces</p>
-      </div>
-    </Link>
+            </div>
+            <h4>Peaceful Piano</h4>
+            <p>Relax and indulge with beautiful piano pieces</p>
+            </div>
+            
+            </Link>
 
             
           </div>
+          <hr />
         </div>
 
-        <div className="spotify-playlists">
-          <h2>Giai điệu tạo bằng AI</h2>
-          <div className="list">
-          <Link 
-            href="/play" 
-            onClick={() => onShowPlaybar()}
-            >
-              <div className="item">
-              <img src={albumImg.src} alt="Album"/>
-              <div className="play">
-              <span className="fa fa-play"></span>
-              </div>
-              <h4>Peaceful Piano</h4>
-              <p>Relax and indulge with beautiful piano pieces</p>
-              </div>
-          </Link>
-          </div>
-        </div>
 
         <div className="spotify-playlists">
           <h2>Album phổ biến</h2>

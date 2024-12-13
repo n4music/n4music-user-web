@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import defaultUserImg from '@/images/User.png';
 
 interface UserMenuProps {
   isLoggedIn: boolean;
@@ -20,7 +21,6 @@ export default function UserMenu({ isLoggedIn, userInfo, onLogout }: UserMenuPro
       if (isLoggedIn) {
         try {
           const token = localStorage.getItem('token');
-          console.log('Current token:', token);
           
           const response = await fetch('https://bill.binnguyen.id.vn/v1/members/me', {
             method: 'GET',
@@ -33,18 +33,15 @@ export default function UserMenu({ isLoggedIn, userInfo, onLogout }: UserMenuPro
 
           if (response.ok) {
             const userData = await response.json();
-            console.log('User data:', userData);
             
             if (userData.data && userData.data.member) {
               const newUserInfo = {
                 name: userData.data.member.name || "User",
-                avatar: userData.data.member.avatar || "/default-avatar.png" 
+                avatar: userData.data.member.avatar || defaultUserImg.src
               };
               setUpdatedUserInfo(newUserInfo);
               localStorage.setItem('userInfo', JSON.stringify(newUserInfo));
             }
-          } else {
-            console.log('Response error:', response.status);
           }
         } catch (error) {
           console.error('Fetch error:', error);
@@ -54,8 +51,6 @@ export default function UserMenu({ isLoggedIn, userInfo, onLogout }: UserMenuPro
 
     fetchUserInfo();
   }, [isLoggedIn]);
-
-  console.log('UserMenu props:', { isLoggedIn, userInfo });
 
   if (!isLoggedIn) {
     return (
@@ -77,7 +72,7 @@ export default function UserMenu({ isLoggedIn, userInfo, onLogout }: UserMenuPro
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         <Image 
-          src={updatedUserInfo?.avatar || '/default-avatar.png'} 
+          src={updatedUserInfo?.avatar || defaultUserImg.src}
           alt="Ảnh đại diện" 
           width={32} 
           height={32} 
