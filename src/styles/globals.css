@@ -142,44 +142,62 @@ body {
 
 .search-bar {
   position: relative;
-  width: 700px;
 }
 
-.search-bar input {
-  width: 100%;
-  height: 50px;
-  padding: 0 45px 0 20px;
-  border-radius: 25px;
-  border: none;
-  background-color: #242424;
-  color: white;
-  font-size: 16px;
-}
-
-.search-bar input::placeholder {
-  color: #909090;
-}
-
-.search-bar input:focus {
-  outline: none;
-  background-color: #2a2a2a;
-}
-.search-bar .search-icon {
+.search-dropdown {
   position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #909090;
-  font-size: 18px;
-  padding-right: 15px;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #282828;
+  border-radius: 4px;
+  margin-top: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  scrollbar-width: thin;
+  scrollbar-color: #535353 #282828;
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
   cursor: pointer;
-  z-index: 10;
+  transition: background-color 0.2s;
 }
 
-.search-bar .search-icon:hover {
+.search-item:hover {
+  background-color: #3e3e3e;
+}
+
+.search-item img {
+  border-radius: 4px;
+  margin-right: 12px;
+}
+
+.search-item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.song-name {
   color: white;
+  font-size: 14px;
+  margin-bottom: 4px;
 }
 
+.artist-name {
+  color: #b3b3b3;
+  font-size: 12px;
+}
+
+.no-results {
+  padding: 16px;
+  text-align: center;
+  color: #b3b3b3;
+}
 
 .spotify-playlists {
   padding: 20px 40px;
@@ -326,4 +344,19 @@ body {
 
 .social-icon:hover {
   background: #1db954;
+}
+
+/* Style cho Chrome/Safari/Edge */
+.search-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.search-dropdown::-webkit-scrollbar-track {
+  background: #282828;
+  border-radius: 4px;
+}
+
+.search-dropdown::-webkit-scrollbar-thumb {
+  background: #535353;
+  border-radius: 4px;
 }

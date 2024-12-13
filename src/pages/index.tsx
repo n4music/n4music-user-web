@@ -28,11 +28,33 @@ interface UserInfo {
   avatar: string;
 }
 
+interface Song {
+  id: number;
+  name: string;
+  description: string;
+  avatar: string;
+  type: number;
+  status: number;
+  meta: {
+    genre: string;
+    length: string;
+  };
+  artist: {
+    id: number;
+    name: string;
+    description: string;
+    status: number;
+    meta: any;
+  };
+}
+
 export default function Home({ onShowPlaybar }: HomeProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const [isChoosePlaylistOpen, setIsChoosePlaylistOpen] = useState(false);
+  const [songs, setSongs] = useState<Song[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
   const playlists = [
     {
       id: 1,
@@ -55,6 +77,64 @@ export default function Home({ onShowPlaybar }: HomeProps) {
       setUserInfo(JSON.parse(storedUserInfo));
     }
   }, []); // Chạy một lần khi component mount
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+          console.log('Chưa đăng nhập');
+          return;
+        }
+
+        const response = await fetch('https://bill.binnguyen.id.vn/v1/songs', {
+          headers: {
+            'accept': '*/*',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          if (response.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userInfo');
+            setIsLoggedIn(false);
+            setUserInfo(null);
+            throw new Error('Phiên đăng nhập đã hết hạn');
+          }
+          throw new Error('Không thể lấy danh sách bài hát');
+        }
+        
+        const result = await response.json();
+        console.log('API Response:', result); // Debug log
+        
+        if (result.success && result.data && Array.isArray(result.data.data)) {
+          setSongs(result.data.data);
+        } else {
+          console.error('Cấu trúc data không đúng:', result);
+        }
+      } catch (error) {
+        console.error('Lỗi khi lấy danh sách bài hát:', error);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchSongs();
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const searchBar = document.querySelector('.search-bar');
+      if (searchBar && !searchBar.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -91,6 +171,7 @@ export default function Home({ onShowPlaybar }: HomeProps) {
   const handleCreatePlaylist = (playlistName: string) => {
     console.log('Tạo playlist mới:', playlistName);
   };
+
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} main`}>
       <Head>
@@ -153,8 +234,37 @@ export default function Home({ onShowPlaybar }: HomeProps) {
             <input 
               type="text" 
               placeholder="Bạn muốn nghe gì?"
+              onFocus={() => setShowDropdown(true)}
+              readOnly
             />
             <i className="fas fa-search search-icon"></i>
+            
+            {showDropdown && (
+              <div className="search-dropdown">
+                {songs.length > 0 ? (
+                  songs.map(song => (
+                    <Link 
+                      key={song.id}
+                      href="/play"
+                      onClick={() => {
+                        setShowDropdown(false);
+                        onShowPlaybar();
+                      }}
+                    >
+                      <div className="search-item">
+                        <img src={song.avatar} alt={song.name} width="40" height="40" />
+                        <div className="search-item-info">
+                          <div className="song-name">{song.name}</div>
+                          <div className="artist-name">{song.artist.name}</div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))
+                ) : (
+                  <div className="no-results">Không có bài hát nào</div>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="navbar">
