@@ -184,6 +184,15 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
                 placeholder="Mô tả ý tưởng bài hát của bạn..."
                 rows={6}
               />
+              <button className="ai-generate-btn" style={{marginBottom: '30px'}}>
+                <i className="fas fa-magic"></i>
+                Gợi ý
+              </button>
+              <textarea 
+                className="ai-textarea"
+                placeholder="Chỉnh sửa lại cho phù hợp với bạn..."
+                rows={6}
+              />
               <button className="ai-generate-btn">
                 <i className="fas fa-magic"></i>
                 Tạo nhạc

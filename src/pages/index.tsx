@@ -55,6 +55,7 @@ export default function Home({ onShowPlaybar }: HomeProps) {
     const [isChoosePlaylistOpen, setIsChoosePlaylistOpen] = useState(false);
   const [songs, setSongs] = useState<Song[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [randomSongs, setRandomSongs] = useState<Song[]>([]);
   const playlists = [
     {
       id: 1,
@@ -135,6 +136,17 @@ export default function Home({ onShowPlaybar }: HomeProps) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    const getRandomSongs = () => {
+      const shuffled = [...songs].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, 10);
+    };
+
+    if (songs.length > 0) {
+      setRandomSongs(getRandomSongs());
+    }
+  }, [songs]);
 
   const handleLogout = async () => {
     try {
@@ -287,29 +299,29 @@ export default function Home({ onShowPlaybar }: HomeProps) {
         <div className="spotify-playlists">
           <h2>Hôm nay nghe gì</h2>
           <div className="list">
-          <Link 
-          href="/play" 
-            onClick={() => onShowPlaybar()}
-           >
-           <div className="item">
-             <img src={albumImg.src} alt="Album"/>
-           <div className="play">
-          <span className="fa fa-play"></span>
-            </div>
-            <h4>Peaceful Piano</h4>
-            <p>Relax and indulge with beautiful piano pieces</p>
-            </div>
-            
-            </Link>
-
-            
+            {randomSongs.map((song) => (
+              <Link 
+                key={song.id}
+                href="/play" 
+                onClick={() => onShowPlaybar()}
+              >
+                <div className="item">
+                  <img src={song.avatar} alt={song.name}/>
+                  <div className="play">
+                    <span className="fa fa-play"></span>
+                  </div>
+                  <h4>{song.name}</h4>
+                  <p>{song.artist.name}</p>
+                </div>
+              </Link>
+            ))}
           </div>
           <hr />
         </div>
 
 
         <div className="spotify-playlists">
-          <h2>Album phổ biến</h2>
+          <h2>Nhạc AI dành cho bạn</h2>
           <div className="list">
             <Link href="/list">
               <div className="item">
@@ -329,7 +341,7 @@ export default function Home({ onShowPlaybar }: HomeProps) {
         </div>
 
         <div className="spotify-playlists">
-          <h2>Bảng xếp hạng </h2>
+          <h2>Album phổ biến</h2>
           <div className="list">
           <Link href="/list">
               <div className="item">
