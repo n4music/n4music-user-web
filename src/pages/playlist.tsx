@@ -2,10 +2,12 @@ import localFont from "next/font/local";
 import logoImg from '@/images/Logo.png'
 import Head from 'next/head';
 import Link from 'next/link';
-import albumImg from '@/images/eminem.jpg'
 import { useState, useEffect } from 'react';
 import CreatePlaylistModal from '../components/CreatePlaylistModal';
 import UserMenu from '../components/UserMenu';
+import defaultPlaylistImg from '@/images/imagesAI.png';
+import imagesAI from '@/images/imagesAI.png';
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -27,33 +29,88 @@ interface UserInfo {
   avatar: string;
 }
 
+interface Playlist {
+  id: number;
+  name: string;
+  description: string;
+  avatar: string;
+  memberId: number;
+  meta: {
+    genre: string;
+  };
+}
+
 export default function Playlist({ onShowPlaybar }: HomeProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const [isChoosePlaylistOpen, setIsChoosePlaylistOpen] = useState(false);
-  const playlists = [
-    {
-      id: 1,
-      name: 'My Playlist #1',
-      songCount: 10,
-      image: albumImg.src
-    },
-  ];
+  const [userPlaylists, setUserPlaylists] = useState<Playlist[]>([]);
 
+  // Kiểm tra đăng nhập
   useEffect(() => {
-    // Kiểm tra token và userInfo trong localStorage
     const token = localStorage.getItem('token');
     const storedUserInfo = localStorage.getItem('userInfo');
     
-    console.log('Stored token:', token); // Debug log
-    console.log('Stored userInfo:', storedUserInfo); // Debug log
-
     if (token && storedUserInfo) {
       setIsLoggedIn(true);
       setUserInfo(JSON.parse(storedUserInfo));
     }
-  }, []); // Chạy một lần khi component mount
+  }, []);
+
+  // Fetch playlists
+  useEffect(() => {
+    const fetchPlaylists = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('Vui lòng đăng nhập để xem playlist');
+          return;
+        }
+
+        console.log('Token being used:', token); // Debug log
+
+        const response = await fetch('https://bill.binnguyen.id.vn/playlist', {
+          method: 'GET',
+          headers: {
+            'accept': '*/*',
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        console.log('Response status:', response.status); // Debug log
+        console.log('Response headers:', Object.fromEntries(response.headers)); // Debug log
+
+        if (response.status === 401) {
+          throw new Error('Unauthorized - Token không hợp lệ hoặc đã hết hạn');
+        }
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('API Response:', data); // Debug log
+
+        if (data && Array.isArray(data)) {
+          setUserPlaylists(data);
+        } else if (data && data.data && Array.isArray(data.data)) {
+          setUserPlaylists(data.data);
+        } else {
+          console.error('Định dạng data không đúng:', data);
+          setUserPlaylists([]);
+        }
+
+      } catch (error) {
+        console.error('Lỗi khi lấy danh sách playlist:', error);
+        setUserPlaylists([]);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchPlaylists();
+    }
+  }, [isLoggedIn]);
 
   const handleLogout = async () => {
     try {
@@ -71,7 +128,6 @@ export default function Playlist({ onShowPlaybar }: HomeProps) {
         throw new Error('Logout failed');
       }
 
-      // Sau khi logout thành công từ server
       localStorage.removeItem('token');
       localStorage.removeItem('userInfo');
       setIsLoggedIn(false);
@@ -79,7 +135,6 @@ export default function Playlist({ onShowPlaybar }: HomeProps) {
 
     } catch (error) {
       console.error('Lỗi khi logout:', error);
-      // Vẫn xóa thông tin local trong trường hợp lỗi
       localStorage.removeItem('token');
       localStorage.removeItem('userInfo');
       setIsLoggedIn(false);
@@ -87,9 +142,66 @@ export default function Playlist({ onShowPlaybar }: HomeProps) {
     }
   };
 
-  const handleCreatePlaylist = (playlistName: string) => {
-    console.log('Tạo playlist mới:', playlistName);
+  const handleCreatePlaylist = async (playlistName: string) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Vui lòng đăng nhập để tạo playlist');
+        return;
+      }
+  
+      const response = await fetch('https://bill.binnguyen.id.vn/playlist', {
+        method: 'POST',
+        headers: {
+          'accept': '*/*',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: playlistName,
+          description: "This is my favorite playlist",
+          avatar: imagesAI.src,
+          memberId: 1,
+          meta: {
+            genre: "Pop"
+          }
+        })
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Không thể tạo playlist');
+      }
+  
+      const result = await response.json();
+      console.log('Tạo playlist thành công:', result);
+      alert('Tạo playlist thành công!');
+      
+      // Fetch lại danh sách playlist sau khi tạo thành công
+      const updatedResponse = await fetch('https://bill.binnguyen.id.vn/playlist', {
+        method: 'GET',
+        headers: {
+          'accept': '*/*',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (updatedResponse.ok) {
+        const data = await updatedResponse.json();
+        if (data && Array.isArray(data)) {
+          setUserPlaylists(data);
+        } else if (data && data.data && Array.isArray(data.data)) {
+          setUserPlaylists(data.data);
+        }
+      }
+
+    } catch (error) {
+      console.error('Lỗi khi tạo playlist:', error);
+      throw error;
+    }
   };
+
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} main`}>
       <Head>
@@ -177,16 +289,13 @@ export default function Playlist({ onShowPlaybar }: HomeProps) {
           <div className="playlist-grid">
             <h1 className="playlist-title">Playlist của bạn</h1>
             <div className="playlist-items">
-              <div className="playlist-card">
-                <img src={albumImg.src} alt="Playlist" />
-                <h3>My Playlist #1</h3>
-                <p>10 bài hát</p>
-              </div>
-              <div className="playlist-card">
-                <img src={albumImg.src} alt="Playlist" />
-                <h3>My Playlist #2</h3>
-                <p>15 bài hát</p>
-              </div>
+              {userPlaylists.map((playlist) => (
+                <div key={playlist.id} className="playlist-card">
+                  <img src={defaultPlaylistImg.src} alt={playlist.name} />
+                  <h3>{playlist.name}</h3>
+                  <p>{playlist.description}</p>
+                </div>
+              ))}
               <div 
                 className="playlist-card create-playlist"
                 onClick={() => setIsModalOpen(true)}

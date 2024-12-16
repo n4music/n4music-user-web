@@ -1,3 +1,4 @@
+
 import localFont from "next/font/local";
 import logoImg from '@/images/Logo.png'
 import albumImg from '@/images/eminem.jpg'
@@ -95,8 +96,45 @@ export default function UserProfile({ onShowPlaybar }: HomeProps) {
     }
   };
 
-  const handleCreatePlaylist = (playlistName: string) => {
-    console.log('Tạo playlist mới:', playlistName);
+  const handleCreatePlaylist = async (playlistName: string) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Vui lòng đăng nhập để tạo playlist');
+        return;
+      }
+  
+      const response = await fetch('https://bill.binnguyen.id.vn/playlist', {
+        method: 'POST',
+        headers: {
+          'accept': '*/*',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: playlistName,
+          description: "This is my favorite playlist",
+          avatar: "http://example.com/avatar.png",
+          memberId: 1,
+          meta: {
+            genre: "Pop"
+          }
+        })
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Không thể tạo playlist');
+      }
+  
+      const result = await response.json();
+      console.log('Tạo playlist thành công:', result);
+      alert('Tạo playlist thành công!');
+  
+    } catch (error) {
+      console.error('Lỗi khi tạo playlist:', error);
+      throw error;
+    }
   };
 
   return (

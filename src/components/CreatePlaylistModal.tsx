@@ -8,12 +8,29 @@ interface CreatePlaylistModalProps {
 
 export default function CreatePlaylistModal({ isOpen, onClose, onSubmit }: CreatePlaylistModalProps) {
   const [playlistName, setPlaylistName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(playlistName);
-    setPlaylistName('');
-    onClose();
+    
+    if (!playlistName.trim()) {
+      setError('Vui lòng nhập tên playlist');
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+
+    try {
+      await onSubmit(playlistName);
+      setPlaylistName('');
+      onClose();
+    } catch (err) {
+      setError('Không thể tạo playlist. Vui lòng thử lại.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -26,13 +43,22 @@ export default function CreatePlaylistModal({ isOpen, onClose, onSubmit }: Creat
           <input
             type="text"
             value={playlistName}
-            onChange={(e) => setPlaylistName(e.target.value)}
+            onChange={(e) => {
+              setPlaylistName(e.target.value);
+              setError('');
+            }}
             placeholder="Nhập tên playlist"
             autoFocus
+            disabled={isLoading}
           />
+          {error && <p className="error-message">{error}</p>}
           <div className="modal-buttons">
-            <button type="button" onClick={onClose}>Hủy</button>
-            <button type="submit">Tạo</button>
+            <button type="button" onClick={onClose} disabled={isLoading}>
+              Hủy
+            </button>
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? 'Đang tạo...' : 'Tạo'}
+            </button>
           </div>
         </form>
       </div>

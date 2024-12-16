@@ -28,11 +28,25 @@ interface UserInfo {
   avatar: string;
 }
 
+interface Genre {
+  id: number;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  meta: {
+    origin: string;
+    popularity: number;
+  };
+}
+
 export default function PlayAI({ onShowPlaybar }: HomeProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isChoosePlaylistOpen, setIsChoosePlaylistOpen] = useState(false);
+  const [genres, setGenres] = useState<Genre[]>([]);
+  const [selectedGenre, setSelectedGenre] = useState('');
   const playlists = [
     {
       id: 1,
@@ -55,6 +69,43 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
       setUserInfo(JSON.parse(storedUserInfo));
     }
   }, []); // Chạy một lần khi component mount
+
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.log('Chưa đăng nhập');
+          return;
+        }
+
+        const response = await fetch('https://bill.binnguyen.id.vn/genre', {
+          headers: {
+            'accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Không thể lấy danh sách thể loại');
+        }
+
+        const data = await response.json();
+        console.log('Raw API Response:', data); // Log để kiểm tra dữ liệu thô
+
+        if (Array.isArray(data)) {
+          setGenres(data);
+          console.log('Processed Genres:', data); // Log sau khi xử lý
+        } else {
+          console.error('Dữ liệu không đúng định dạng:', data);
+        }
+      } catch (error) {
+        console.error('Lỗi khi lấy danh sách thể loại:', error);
+      }
+    };
+
+    fetchGenres();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -88,8 +139,45 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
     }
   };
 
-  const handleCreatePlaylist = (playlistName: string) => {
-    console.log('Tạo playlist mới:', playlistName);
+  const handleCreatePlaylist = async (playlistName: string) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Vui lòng đăng nhập để tạo playlist');
+        return;
+      }
+  
+      const response = await fetch('https://bill.binnguyen.id.vn/playlist', {
+        method: 'POST',
+        headers: {
+          'accept': '*/*',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: playlistName,
+          description: "This is my favorite playlist",
+          avatar: "http://example.com/avatar.png",
+          memberId: 1,
+          meta: {
+            genre: "Pop"
+          }
+        })
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Không thể tạo playlist');
+      }
+  
+      const result = await response.json();
+      console.log('Tạo playlist thành công:', result);
+      alert('Tạo playlist thành công!');
+  
+    } catch (error) {
+      console.error('Lỗi khi tạo playlist:', error);
+      throw error;
+    }
   };
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} main`}>
@@ -193,6 +281,27 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
                 placeholder="Chỉnh sửa lại cho phù hợp với bạn..."
                 rows={6}
               />
+              
+              <div className="form-group">
+                <label>Thể loại nhạc</label>
+
+                <select 
+                  value={selectedGenre}
+                  onChange={(e) => setSelectedGenre(e.target.value)}
+                  required
+                >
+                  <option value="">Chọn thể loại</option>
+                  {genres && genres.length > 0 ? (
+                    genres.map((genre) => (
+                      <option key={genre.id} value={genre.id.toString()}>
+                        {genre.name}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="" disabled>Đang tải thể loại...</option>
+                  )}
+                </select>
+              </div>
               <button className="ai-generate-btn">
                 <i className="fas fa-magic"></i>
                 Tạo nhạc
