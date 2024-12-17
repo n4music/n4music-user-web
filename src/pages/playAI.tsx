@@ -3,7 +3,7 @@ import logoImg from '@/images/Logo.png'
 import Head from 'next/head';
 import Link from 'next/link';
 import albumImg from '@/images/eminem.jpg'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CreatePlaylistModal from '../components/CreatePlaylistModal';
 import UserMenu from '../components/UserMenu';
 
@@ -40,6 +40,12 @@ interface Genre {
   };
 }
 
+interface GeneratedContent {
+  songName?: string;
+  imageUrl?: string;
+  musicUrl?: string;
+}
+
 export default function PlayAI({ onShowPlaybar }: HomeProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,6 +56,7 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
   const [userInput, setUserInput] = useState('');
   const [suggestion, setSuggestion] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedContent, setGeneratedContent] = useState<GeneratedContent>({});
   const playlists = [
     {
       id: 1,
@@ -72,7 +79,6 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
       setUserInfo(JSON.parse(storedUserInfo));
     }
   }, []); // Chạy một lần khi component mount
-
   useEffect(() => {
     const fetchGenres = async () => {
       try {
@@ -82,7 +88,7 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
           return;
         }
 
-        const response = await fetch('https://bill.binnguyen.id.vn/genre', {
+        const response = await fetch('https://n4music-web-api.binnguyen.id.vn/genre', {
           headers: {
             'accept': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -114,7 +120,7 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch('https://bill.binnguyen.id.vn/v1/auth/logout', {
+      const response = await fetch('https://n4music-web-api.binnguyen.id.vn/v1/auth/logout', {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -150,7 +156,7 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
         return;
       }
   
-      const response = await fetch('https://bill.binnguyen.id.vn/playlist', {
+      const response = await fetch('https://n4music-web-api.binnguyen.id.vn/playlist', {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -197,7 +203,6 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        mode: 'cors',
         body: JSON.stringify({ context: userInput })
       });
 
@@ -217,8 +222,59 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
     }
   };
 
+  const handleGenerateMusic = async () => {
+    if (!suggestion || !selectedGenre) {
+      alert('Vui lòng nhập đầy đủ thông tin');
+      return;
+    }
+  
+    try {
+      setIsGenerating(true);
+  
+      const [songNameData, imageData, musicData] = await Promise.all([
+        // Generate song name
+        fetch('http://127.0.0.1:5000/generate_song_name', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ context: suggestion })
+        }).then(res => res.json()),
+  
+        // Generate image
+        fetch('http://127.0.0.1:5000/generate_image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ context: suggestion })
+        }).then(res => res.json()),
+  
+        // Generate music
+        fetch('http://127.0.0.1:5000/generate_music', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ context: suggestion })
+        }).then(res => res.json())
+      ]);
+  
+      setGeneratedContent({
+        songName: songNameData.song_name,
+        imageUrl: imageData.physicalPath,
+        musicUrl: musicData.physicalPath
+      });
+  
+    } catch (error) {
+      console.error('Error generating content:', error);
+      alert('Có lỗi xảy ra khi tạo nội dung');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} main`}>
+      {isGenerating && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
       <Head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
       </Head>
@@ -349,9 +405,13 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
                   )}
                 </select>
               </div>
-              <button className="ai-generate-btn">
+              <button 
+                className="ai-generate-btn"
+                onClick={handleGenerateMusic}
+                disabled={isGenerating}
+              >
                 <i className="fas fa-magic"></i>
-                Tạo nhạc
+                {isGenerating ? 'Đang tạo nhạc...' : 'Tạo nhạc'}
               </button>
             </div>
 
@@ -359,17 +419,25 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
               
               <div className="ai-player">
                 <div className="playAI-info">
-                  <h3>Bài hát được tạo</h3>
-                  <p>Được tạo bởi AI</p>
+                  <h3>{generatedContent.songName || 'Đang tạo bài hát...'}</h3>
+                  {generatedContent.imageUrl && (
+                    <img 
+                      src={generatedContent.imageUrl} 
+                      alt="Generated cover" 
+                      style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                    />
+                  )}
                 </div>
                 <div className="playAI-controls">
-                <button className="play-btnAI">
-  <i className="fas fa-play-circle"></i>
-</button>
-                  <div className="progress-barAI">
-                    <div className="progressAI"></div>
-                  </div>
-                  <span className="durationAI">0:00</span>
+                  {generatedContent.musicUrl ? (
+                    <>
+                      <audio controls src={generatedContent.musicUrl}>
+                        Your browser does not support the audio element.
+                      </audio>
+                    </>
+                  ) : (
+                    <p>Đang tạo nhạc...</p>
+                  )}
                 </div>
               </div>
             </div>

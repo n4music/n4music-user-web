@@ -18,10 +18,10 @@ const MyDocument = () => (
         integrity="sha384-Gn5384xq1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAi56JXm"
         crossOrigin="anonymous"
       />
-      <script
+      {/* <script
         async
         src="https://your-script-url.js"
-      />
+      /> */}
     </Head>
     <body>
       <Main />

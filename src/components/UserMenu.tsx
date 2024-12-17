@@ -22,7 +22,7 @@ export default function UserMenu({ isLoggedIn, userInfo, onLogout }: UserMenuPro
         try {
           const token = localStorage.getItem('token');
           
-          const response = await fetch('https://bill.binnguyen.id.vn/v1/members/me', {
+          const response = await fetch('https://n4music-web-api.binnguyen.id.vn/v1/members/me', {
             method: 'GET',
             headers: {
               'accept': '*/*',
