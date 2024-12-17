@@ -3,7 +3,7 @@ import logoImg from '@/images/Logo.png'
 import Head from 'next/head';
 import Link from 'next/link';
 import albumImg from '@/images/eminem.jpg'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CreatePlaylistModal from '../components/CreatePlaylistModal';
 import UserMenu from '../components/UserMenu';
 
@@ -40,6 +40,12 @@ interface Genre {
   };
 }
 
+interface GeneratedContent {
+  songName?: string;
+  imageUrl?: string;
+  musicUrl?: string;
+}
+
 export default function PlayAI({ onShowPlaybar }: HomeProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,6 +56,7 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
   const [userInput, setUserInput] = useState('');
   const [suggestion, setSuggestion] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedContent, setGeneratedContent] = useState<GeneratedContent>({});
   const playlists = [
     {
       id: 1,
@@ -72,7 +79,6 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
       setUserInfo(JSON.parse(storedUserInfo));
     }
   }, []); // Chạy một lần khi component mount
-
   useEffect(() => {
     const fetchGenres = async () => {
       try {
@@ -197,7 +203,6 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        mode: 'cors',
         body: JSON.stringify({ context: userInput })
       });
 
@@ -291,6 +296,11 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
 
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} main`}>
+      {isGenerating && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
       <Head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
       </Head>
@@ -435,8 +445,14 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
               
               <div className="ai-player">
                 <div className="playAI-info">
-                  <h3>Bài hát được tạo</h3>
-                  <p>Được tạo bởi AI</p>
+                  <h3>{generatedContent.songName || 'Đang tạo bài hát...'}</h3>
+                  {generatedContent.imageUrl && (
+                    <img 
+                      src={generatedContent.imageUrl} 
+                      alt="Generated cover" 
+                      style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                    />
+                  )}
                 </div>
                 <div className="playAI-controls">
                 <button className="play-btnAI">
