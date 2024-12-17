@@ -19,7 +19,7 @@ export default function Step3() {
 
     try {
       // 1. Đăng ký tài khoản
-      const signUpResponse = await fetch('https://bill.binnguyen.id.vn/v1/auth/sign-up', {
+      const signUpResponse = await fetch('https://n4music-web-api.binnguyen.id.vn/v1/auth/sign-up', {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -37,7 +37,7 @@ export default function Step3() {
       }
 
       // 2. Đăng nhập để lấy token
-      const loginResponse = await fetch('https://bill.binnguyen.id.vn/v1/auth/sign-in', {
+      const loginResponse = await fetch('https://n4music-web-api.binnguyen.id.vn/v1/auth/sign-in', {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -58,7 +58,7 @@ export default function Step3() {
       localStorage.setItem('token', loginData.token);
 
       // 3. Cập nhật thông tin cá nhân
-      const updateResponse = await fetch('https://bill.binnguyen.id.vn/v1/members/me', {
+      const updateResponse = await fetch('https://n4music-web-api.binnguyen.id.vn/v1/members/me', {
         method: 'PUT',
         headers: {
           'accept': '*/*',

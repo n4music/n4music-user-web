@@ -69,7 +69,7 @@ export default function Playlist({ onShowPlaybar }: HomeProps) {
 
         console.log('Token being used:', token); // Debug log
 
-        const response = await fetch('https://bill.binnguyen.id.vn/playlist', {
+        const response = await fetch('https://n4music-web-api.binnguyen.id.vn/playlist', {
           method: 'GET',
           headers: {
             'accept': '*/*',
@@ -116,7 +116,7 @@ export default function Playlist({ onShowPlaybar }: HomeProps) {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch('https://bill.binnguyen.id.vn/v1/auth/logout', {
+      const response = await fetch('https://n4music-web-api.binnguyen.id.vn/v1/auth/logout', {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -150,7 +150,7 @@ export default function Playlist({ onShowPlaybar }: HomeProps) {
         return;
       }
   
-      const response = await fetch('https://bill.binnguyen.id.vn/playlist', {
+      const response = await fetch('https://n4music-web-api.binnguyen.id.vn/playlist', {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -178,7 +178,7 @@ export default function Playlist({ onShowPlaybar }: HomeProps) {
       alert('Tạo playlist thành công!');
       
       // Fetch lại danh sách playlist sau khi tạo thành công
-      const updatedResponse = await fetch('https://bill.binnguyen.id.vn/playlist', {
+      const updatedResponse = await fetch('https://n4music-web-api.binnguyen.id.vn/playlist', {
         method: 'GET',
         headers: {
           'accept': '*/*',

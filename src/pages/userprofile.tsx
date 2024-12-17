@@ -1,7 +1,7 @@
 
 import localFont from "next/font/local";
 import logoImg from '@/images/Logo.png'
-import albumImg from '@/images/eminem.jpg'
+import albumImg from '@/images/User.png'
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
@@ -68,7 +68,7 @@ export default function UserProfile({ onShowPlaybar }: HomeProps) {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch('https://bill.binnguyen.id.vn/v1/auth/logout', {
+      const response = await fetch('https://n4music-web-api.binnguyen.id.vn/v1/auth/logout', {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -104,7 +104,7 @@ export default function UserProfile({ onShowPlaybar }: HomeProps) {
         return;
       }
   
-      const response = await fetch('https://bill.binnguyen.id.vn/playlist', {
+      const response = await fetch('https://n4music-web-api.binnguyen.id.vn/playlist', {
         method: 'POST',
         headers: {
           'accept': '*/*',

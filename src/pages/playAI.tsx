@@ -82,7 +82,7 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
           return;
         }
 
-        const response = await fetch('https://bill.binnguyen.id.vn/genre', {
+        const response = await fetch('https://n4music-web-api.binnguyen.id.vn/genre', {
           headers: {
             'accept': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -114,7 +114,7 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch('https://bill.binnguyen.id.vn/v1/auth/logout', {
+      const response = await fetch('https://n4music-web-api.binnguyen.id.vn/v1/auth/logout', {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -150,7 +150,7 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
         return;
       }
   
-      const response = await fetch('https://bill.binnguyen.id.vn/playlist', {
+      const response = await fetch('https://n4music-web-api.binnguyen.id.vn/playlist', {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -212,6 +212,78 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
     } catch (error) {
       console.error('Lỗi khi lấy gợi ý:', error);
       alert('Có lỗi xảy ra khi tạo gợi ý. Vui lòng thử lại sau.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+  const handleGenerateMusic = async () => {
+    if (!selectedGenre || !suggestion.trim()) {
+      alert('Vui lòng chọn thể loại và nhập mô tả bài hát');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Vui lòng đăng nhập để sử dụng tính năng này');
+        return;
+      }
+
+      setIsGenerating(true);
+      const response = await fetch('https://n4music-web-api.binnguyen.id.vn/v1/songs', {
+        method: 'POST',
+        headers: {
+          'accept': '*/*', 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          context: suggestion,
+          gense: parseInt(selectedGenre)
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Không thể tạo nhạc. Vui lòng thử lại sau.');
+      }
+
+      const data = await response.json();
+      console.log('API Response:', data);
+      alert('Yêu cầu tạo nhạc đã được gửi. Vui lòng đợi trong giây lát...');
+
+      // Subscribe to Kafka events
+      const kafkaClient = new WebSocket('ws://your-kafka-websocket-endpoint');
+      
+      kafkaClient.onmessage = (event) => {
+        const kafkaData = JSON.parse(event.data);
+        
+        if (kafkaData.topic === 'generate_music_result') {
+          // Handle music generation result
+          console.log('Music generated:', kafkaData.result);
+          // Update UI with generated music
+        }
+        
+        if (kafkaData.topic === 'generate_song_name_result') {
+          // Handle song name generation result
+          console.log('Song name generated:', kafkaData.result);
+          // Update UI with generated song name
+        }
+        
+        if (kafkaData.topic === 'generate_image_result') {
+          // Handle image generation result 
+          console.log('Image generated:', kafkaData.result);
+          // Update UI with generated image
+        }
+      };
+
+      kafkaClient.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        alert('Có lỗi xảy ra khi nhận kết quả. Vui lòng thử lại sau.');
+      };
+
+    } catch (error) {
+      console.error('Lỗi khi tạo nhạc:', error);
+      alert('Có lỗi xảy ra khi tạo nhạc. Vui lòng thử lại sau.');
     } finally {
       setIsGenerating(false);
     }
@@ -349,9 +421,13 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
                   )}
                 </select>
               </div>
-              <button className="ai-generate-btn">
+              <button 
+                className="ai-generate-btn"
+                onClick={handleGenerateMusic}
+                disabled={isGenerating}
+              >
                 <i className="fas fa-magic"></i>
-                Tạo nhạc
+                {isGenerating ? 'Đang tạo nhạc...' : 'Tạo nhạc'}
               </button>
             </div>
 
@@ -364,8 +440,8 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
                 </div>
                 <div className="playAI-controls">
                 <button className="play-btnAI">
-  <i className="fas fa-play-circle"></i>
-</button>
+                  <i className="fas fa-play-circle"></i>
+                </button>
                   <div className="progress-barAI">
                     <div className="progressAI"></div>
                   </div>

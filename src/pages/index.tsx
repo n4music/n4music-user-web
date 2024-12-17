@@ -89,7 +89,7 @@ export default function Home({ onShowPlaybar }: HomeProps) {
           return;
         }
 
-        const response = await fetch('https://bill.binnguyen.id.vn/v1/songs', {
+        const response = await fetch('https://n4music-web-api.binnguyen.id.vn/v1/songs', {
           headers: {
             'accept': '*/*',
             'Authorization': `Bearer ${token}`
@@ -152,7 +152,7 @@ export default function Home({ onShowPlaybar }: HomeProps) {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch('https://bill.binnguyen.id.vn/v1/auth/logout', {
+      const response = await fetch('https://n4music-web-api.binnguyen.id.vn/v1/auth/logout', {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -188,7 +188,7 @@ export default function Home({ onShowPlaybar }: HomeProps) {
         return;
       }
   
-      const response = await fetch('https://bill.binnguyen.id.vn/playlist', {
+      const response = await fetch('https://n4music-web-api.binnguyen.id.vn/playlist', {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -377,23 +377,7 @@ export default function Home({ onShowPlaybar }: HomeProps) {
           <hr />
         </div>
 
-        <div className="spotify-playlists">
-          <h2>Album phổ biến</h2>
-          <div className="list">
-          <Link href="/list">
-              <div className="item">
-                <img src={albumImg.src} alt="Album"/>
-                <div className="play">
-                  <span className="fa fa-play"></span>
-                </div>
-                <h4>Mood Booster</h4>
-                <p>Get happy with today's dose of feel-good...</p>
-              </div>
-            </Link>
-          </div>
-
-          <hr />
-          </div>
+        
           <footer className="footer">
   <div className="footer-content">
     {/* Phần 1: Hỗ trợ */}
