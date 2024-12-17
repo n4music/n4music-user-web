@@ -47,6 +47,9 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
   const [isChoosePlaylistOpen, setIsChoosePlaylistOpen] = useState(false);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [selectedGenre, setSelectedGenre] = useState('');
+  const [userInput, setUserInput] = useState('');
+  const [suggestion, setSuggestion] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
   const playlists = [
     {
       id: 1,
@@ -179,6 +182,41 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
       throw error;
     }
   };
+
+  const handleGetSuggestion = async () => {
+    if (!userInput.trim()) {
+      alert('Vui lòng nhập mô tả ý tưởng bài hát của bạn');
+      return;
+    }
+
+    try {
+      setIsGenerating(true);
+      const response = await fetch('http://127.0.0.1:5000/generate_prompt_suggestion', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        mode: 'cors',
+        body: JSON.stringify({ context: userInput })
+      });
+
+      if (!response.ok) {
+        throw new Error('Lỗi khi gọi API');
+      }
+
+      const data = await response.json();
+      if (data.suggestion) {
+        setSuggestion(data.suggestion);
+      }
+    } catch (error) {
+      console.error('Lỗi khi lấy gợi ý:', error);
+      alert('Có lỗi xảy ra khi tạo gợi ý. Vui lòng thử lại sau.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} main`}>
       <Head>
@@ -271,15 +309,24 @@ export default function PlayAI({ onShowPlaybar }: HomeProps) {
                 className="ai-textarea"
                 placeholder="Mô tả ý tưởng bài hát của bạn..."
                 rows={6}
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
               />
-              <button className="ai-generate-btn" style={{marginBottom: '30px'}}>
+              <button 
+                className="ai-generate-btn" 
+                style={{marginBottom: '30px'}}
+                onClick={handleGetSuggestion}
+                disabled={isGenerating}
+              >
                 <i className="fas fa-magic"></i>
-                Gợi ý
+                {isGenerating ? 'Đang xử lý...' : 'Gợi ý'}
               </button>
               <textarea 
                 className="ai-textarea"
                 placeholder="Chỉnh sửa lại cho phù hợp với bạn..."
                 rows={6}
+                value={suggestion}
+                onChange={(e) => setSuggestion(e.target.value)}
               />
               
               <div className="form-group">
