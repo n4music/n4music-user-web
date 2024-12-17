@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import UserMenu from '../components/UserMenu';
 import CreatePlaylistModal from "@/components/CreatePlaylistModal";
+import { useRouter } from 'next/router';
+import { useSong } from '../contexts/SongContext';
 
 interface Song {
   id: string;
@@ -47,6 +49,9 @@ interface UserInfo {
 
 
   export default function Play({ onShowPlaybar }: HomeProps) {
+    const router = useRouter();
+    const { id } = router.query;
+    const { setCurrentSong } = useSong();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
@@ -214,6 +219,39 @@ interface UserInfo {
       },
       
     ];
+
+    useEffect(() => {
+      const fetchSongDetails = async () => {
+        if (!id) return;
+        
+        try {
+          const token = localStorage.getItem('token');
+          const response = await fetch(`https://n4music-web-api.binnguyen.id.vn/v1/songs/${id}`, {
+            headers: {
+              'accept': '*/*',
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+          if (!response.ok) throw new Error('Failed to fetch song');
+          
+          const result = await response.json();
+          console.log("API Response:", result); // Debug log
+
+          if (result.success && result.data) {
+            console.log("Setting current song:", result.data);
+            setCurrentSong(result.data);
+          } else {
+            console.error("Invalid API response format:", result);
+          }
+        } catch (error) {
+          console.error('Error fetching song:', error);
+        }
+      };
+
+      fetchSongDetails();
+    }, [id, setCurrentSong]);
+  
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} main`}>
       <Head>

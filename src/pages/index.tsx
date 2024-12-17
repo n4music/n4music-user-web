@@ -339,8 +339,10 @@ export default function Home({ onShowPlaybar }: HomeProps) {
             {randomSongs.map((song) => (
               <Link 
                 key={song.id}
-                href="/play" 
-                onClick={() => onShowPlaybar()}
+                href={`/play?id=${song.id}`}
+                onClick={() => {
+                  onShowPlaybar();
+                }}
               >
                 <div className="item">
                   <img src={song.avatar} alt={song.name}/>

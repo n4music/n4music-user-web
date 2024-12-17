@@ -18,17 +18,20 @@ import '@/styles/UserMenu.css'
 import type { AppProps } from "next/app"
 import Playbar from '@/components/playbar'
 import { SignUpProvider } from '@/contexts/SignUpContext';
+import { SongProvider } from '../contexts/SongContext';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isPlaybarVisible, setPlaybarVisible] = useState(false);
 
   return (
-    <SignUpProvider>
-      <Component {...pageProps} onShowPlaybar={() => setPlaybarVisible(true)} />
-      <Playbar 
-        isVisible={isPlaybarVisible} 
-        onClose={() => setPlaybarVisible(false)} 
-      />
-    </SignUpProvider>
+    <SongProvider>
+      <SignUpProvider>
+        <Component {...pageProps} onShowPlaybar={() => setPlaybarVisible(true)} />
+        <Playbar 
+          isVisible={isPlaybarVisible} 
+          onClose={() => setPlaybarVisible(false)} 
+        />
+      </SignUpProvider>
+    </SongProvider>
   );
 }

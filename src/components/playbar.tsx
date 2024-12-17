@@ -1,19 +1,21 @@
 import { useState, useRef, useEffect } from 'react';
 import albumImg from '@/images/Logo.png';
+import { useSong } from '../contexts/SongContext';
 
-interface PlaybarProps {
-  isVisible: boolean;
-  onClose: () => void;
-}
-
-export default function Playbar({ isVisible, onClose }: PlaybarProps) {
+export default function Playbar() {
+  const { currentSong, selectedSongId } = useSong();
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.7);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   
   const audioRef = useRef<HTMLAudioElement>(null);
-  const audioUrl = "https://n4music.s3.ap-southeast-1.amazonaws.com/27e66d10-b1b7-4721-bd70-a1eb577a9fa6.wav";
+  const audioUrl = currentSong?.records?.find(record => record.id === selectedSongId)?.file;
+
+  useEffect(() => {
+    console.log('Song data:', currentSong);
+    console.log('Audio URL:', audioUrl);
+  }, [currentSong, audioUrl]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -32,14 +34,36 @@ export default function Playbar({ isVisible, onClose }: PlaybarProps) {
     }
   }, []);
 
-  const togglePlay = () => {
+  useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
-        audioRef.current.pause();
-      } else {
         audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isPlaying]);
+
+  const togglePlay = async () => {
+    if (!audioRef.current) {
+      console.error("Audio element not found");
+      return;
+    }
+
+    if (!audioUrl) {
+      console.error("No audio source available", currentSong);
+      return;
+    }
+
+    try {
+      if (isPlaying) {
+        await audioRef.current.pause();
+      } else {
+        await audioRef.current.play();
       }
       setIsPlaying(!isPlaying);
+    } catch (error) {
+      console.error("Error playing audio:", error);
     }
   };
 
@@ -73,7 +97,10 @@ export default function Playbar({ isVisible, onClose }: PlaybarProps) {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  if (!isVisible) return null;
+  if (!currentSong || !audioUrl) {
+    console.log("No song or audio URL available");
+    return null;
+  }
 
   return (
     <div className="player-controls">
@@ -81,13 +108,24 @@ export default function Playbar({ isVisible, onClose }: PlaybarProps) {
         ref={audioRef}
         src={audioUrl}
         onTimeUpdate={handleTimeUpdate}
+        onEnded={() => setIsPlaying(false)}
+        onError={(e) => console.error("Audio error:", e)}
       />
       
       <div className="now-playing">
-        <img src={albumImg.src} alt="Album" width="50px" height="50px" />
+        <img 
+          src={currentSong?.avatar || albumImg.src} 
+          alt="Album" 
+          width="50px" 
+          height="50px" 
+        />
         <div className="now-playing-info">
-          <div className="now-playing-title">Đi Giữa Trời Rực Rỡ</div>
-          <div className="now-playing-artist">Ngô Lan Hương</div>
+          <div className="now-playing-title">
+            {currentSong?.name || "Đi Giữa Trời Rực Rỡ"}
+          </div>
+          <div className="now-playing-artist">
+            {currentSong?.artist?.name || "Ngô Lan Hương"}
+          </div>
         </div>
       </div>
 
@@ -120,7 +158,6 @@ export default function Playbar({ isVisible, onClose }: PlaybarProps) {
           <i className="fas fa-list-ul icon"></i>
           <i className="fas fa-arrow-down icon"></i>
           <i className="fas fa-heart icon"></i>
-          <i className="fas fa-times icon" onClick={onClose}></i>
         </div>
       </div>
     </div>
